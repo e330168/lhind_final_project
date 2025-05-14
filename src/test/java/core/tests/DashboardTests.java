@@ -14,7 +14,6 @@ public class DashboardTests extends TestBase {
     @Test
     public void testProductsList() {
         logIn();
-        System.out.println();
         DashboardPage dashboardPage = new DashboardPage(driver, wait);
         dashboardPage.goToWomenViewAll();
 
@@ -27,7 +26,7 @@ public class DashboardTests extends TestBase {
 
             System.out.println("Name: " + name);
             System.out.println("Price: " + price);
-            System.out.println("Image: " + item.getImage());
+            System.out.println("Image: " + item.image.getAttribute("src"));
 
             Assert.assertNotNull(name, "Product name should not be null.");
         }
@@ -36,8 +35,8 @@ public class DashboardTests extends TestBase {
     @Test
     public void hoverActionUI() {
         logIn();
-
         DashboardPage dashboardPage = new DashboardPage(driver, wait);
+        dashboardPage.goToWomenViewAll();
 
         WomenPage firstWomenProduct = dashboardPage.getProductItems().get(0);
         System.out.println(firstWomenProduct.getName());
