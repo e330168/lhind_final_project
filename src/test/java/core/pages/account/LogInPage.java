@@ -4,16 +4,18 @@ import core.elements.account.LogInPageElements;
 import core.utils.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class LogInPage {
     BasePageObject basePageObject = new BasePageObject(DriverProvider.getDriverProvider());
-    LogInPageElements logInPageElements =  new LogInPageElements();
+    LogInPageElements logInPageElements;
     private final WebDriver driver;
+    protected final WebDriverWait wait;
 
-    public LogInPage(WebDriver driver) {
+    public LogInPage(WebDriver driver, WebDriverWait wait) {
         this.driver = driver;
-        LogInPageElements elements = new LogInPageElements();
-        PageFactory.initElements(driver, elements);
+        this.wait = wait;
+        this.logInPageElements = new LogInPageElements();
     }
 
     public void setField(String fieldName, String value) {
@@ -34,8 +36,7 @@ public class LogInPage {
                 throw new IllegalArgumentException("Unknown field: " + fieldName);
         }
     }
-
-
+    
     public void setCheckBox() {
         basePageObject
                 .getWaitUtils()

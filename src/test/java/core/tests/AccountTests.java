@@ -37,10 +37,10 @@ public class AccountTests extends TestBase {
         MainMenuPage menu = new MainMenuPage(driver, wait);
         menu.goToLogin();
 
-        LogInPage loginPage = new LogInPage(driver);
+        LogInPage loginPage = new LogInPage(driver,wait);
         loginPage.logIn();
 
-        DashboardPage dashboard = new DashboardPage(driver);
+        DashboardPage dashboard = new DashboardPage(driver,wait);
         String actualWelcome = dashboard.getWelcomeMessageText();
         System.out.println(actualWelcome);
 
