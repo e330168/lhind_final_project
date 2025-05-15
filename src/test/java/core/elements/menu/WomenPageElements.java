@@ -5,23 +5,32 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.pagefactory.DefaultElementLocatorFactory;
 
 import java.util.List;
 
 public class WomenPageElements {
-    public WomenPageElements(){
-        PageFactory.initElements(DriverProvider.getDriver(), this);
+    public WomenPageElements(WebElement productRoot) {
+        PageFactory.initElements(new DefaultElementLocatorFactory(productRoot), this);
     }
 
     @FindBy(css = ".product-name")
     public WebElement productName;
 
-    @FindBy(xpath = "//*[contains(@id, 'product-collection-image')]")
+//    @FindBy(xpath = "//*[contains(@id, 'product-collection-image')]")
+//    @FindBy(xpath = "//img[contains(@id,'product-collection-image')]")
+//    @FindBy(xpath = "//ul[contains(@class, 'products-grid')]/descendant::img[contains(@src, 'product')]")
+//    @FindBy(css = "[src*='product']")
+//    @FindBy(css = "[src*='product'][id*='product']")
+//    @FindBy(css = "img[src*='product'][id*='product']")
+    @FindBy(css="img[id*='product-collection-image']")
     public WebElement image;
 
-    //    @FindBy(id = ".product-price")
     @FindBy(css = "[id*='product-price']")
-    public WebElement productPrice;
+    public WebElement price;
+
+    @FindBy(css = ".product-image")
+    public WebElement hoverStyle;
 
     @FindBy(css = ".rating")
     public WebElement rating;
@@ -31,11 +40,5 @@ public class WomenPageElements {
 
     @FindBy(xpath = "(//*[contains(@class,'ratings')])/following-sibling::div/a")
     public WebElement viewDetailsButton;
-
-    @FindBy(css = ".product-image:hover")
-    public WebElement hoverStyle;
-
-    @FindBy(xpath = "//ul[@class='products-grid products-grid--max-4-col first last odd']/li")
-    public List<WebElement> productItems;
 
 }
