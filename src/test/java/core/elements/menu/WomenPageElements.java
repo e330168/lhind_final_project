@@ -1,13 +1,9 @@
 package core.elements.menu;
 
-import core.utils.DriverProvider;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.DefaultElementLocatorFactory;
-
-import java.util.List;
 
 public class WomenPageElements {
     public WomenPageElements(WebElement productRoot) {
@@ -17,12 +13,6 @@ public class WomenPageElements {
     @FindBy(css = ".product-name")
     public WebElement productName;
 
-//    @FindBy(xpath = "//*[contains(@id, 'product-collection-image')]")
-//    @FindBy(xpath = "//img[contains(@id,'product-collection-image')]")
-//    @FindBy(xpath = "//ul[contains(@class, 'products-grid')]/descendant::img[contains(@src, 'product')]")
-//    @FindBy(css = "[src*='product']")
-//    @FindBy(css = "[src*='product'][id*='product']")
-//    @FindBy(css = "img[src*='product'][id*='product']")
     @FindBy(css="img[id*='product-collection-image']")
     public WebElement image;
 
@@ -32,8 +22,23 @@ public class WomenPageElements {
     @FindBy(css = ".product-image")
     public WebElement hoverStyle;
 
-    @FindBy(css = ".rating")
-    public WebElement rating;
+//    .configurable-swatch-list .selected .swatch-link,.swatch-link:hover {
+//        border-color: #3399cc;
+//    }
+
+//    @FindBy(xpath = "//*[contains(@class, 'selected')]")
+//    @FindBy(xpath = "//li[contains(@class, 'selected')]")
+    @FindBy(xpath = "//a[contains(@name, 'black')]")
+    public WebElement selectedColor;
+
+    //a[@name = "black"]
+    //*[contains(@class, 'has-image swatch-link')]
+
+    @FindBy(css = "[class*='filter-match']")
+    public WebElement filterMatch;
+
+    @FindBy(css="//a[@name = 'black']")
+    public WebElement black;
 
     @FindBy(css = ".add-to-wishlist")
     public WebElement addToWishlistButton;
