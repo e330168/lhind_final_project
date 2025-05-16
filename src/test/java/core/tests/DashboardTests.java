@@ -1,6 +1,7 @@
 package core.tests;
 
 import core.pages.dashboard.DashboardPage;
+import core.pages.menu.SalePage;
 import core.pages.menu.WomenPage;
 import core.utils.TestBase;
 import core.utils.UIActions;
@@ -62,7 +63,7 @@ public class DashboardTests extends TestBase {
     }
 
     @Test
-    public void testMenProducts() {
+    public void checkPageFilters() {
         logIn();
         DashboardPage dashboardPage = new DashboardPage(driver, wait);
         dashboardPage.goToMenViewAll();
@@ -71,7 +72,7 @@ public class DashboardTests extends TestBase {
         List<WomenPage> products = dashboardPage.getProductItemsMen();
         Assert.assertEquals(products.size(), 3);
         products.forEach(product -> {
-            Assert.assertEquals(product.getBorderOfSelectedColor(), "rgb(51, 153, 204)", "Border of selected color should be rgb(51, 153, 204)");
+            Assert.assertEquals(product.getBorderOfSelectedColor(), "rgb(51, 153, 204)", "Border of selected color should be rgb(51, 153, 204).");
         });
 
         driver.navigate().back();
@@ -79,8 +80,41 @@ public class DashboardTests extends TestBase {
 
         int priceFilterCount = dashboardPage.priceFilterCount();
         int totalProducts = dashboardPage.getProductItems().size();
+        Assert.assertTrue(dashboardPage.areAllPricesInRangeAfterFiltering());
 
-        Assert.assertEquals(totalProducts, 3, "Total products displayed count should be 3");
-        Assert.assertEquals(totalProducts, priceFilterCount, "Total products displayed count should be 3");
+
+        Assert.assertEquals(totalProducts, 3, "Total products displayed count should be 3.");
+        Assert.assertEquals(totalProducts, priceFilterCount, "Total products displayed count should be 3.");
     }
+
+    @Test
+    public void checkSaleProductsStyle(){
+        logIn();
+        SalePage salePage = new SalePage(driver, wait);
+        salePage.goToSaleViewAll();
+        salePage.getProductItems();
+        salePage.checkMultiplePrices();
+
+        List<WomenPage> products = salePage.getProductItems();
+
+        Assert.assertEquals(products.size(), 4);
+
+        products.forEach(product -> {
+            Assert.assertTrue(
+                    product.areShownMultiplePrices(),
+                    "Multiple prices (original + discounted) should be visible."
+            );
+
+            Assert.assertTrue(
+                    product.checkOldPriceStyle(),
+                    "Old price should have color rgba(160, 160, 160, 1) and line-through decoration."
+            );
+
+            Assert.assertTrue(
+                    product.checkNewPriceStyle(),
+                    "Final price should have color rgba(51, 153, 204) and no line-through decoration."
+            );
+        });
+    }
+
 }

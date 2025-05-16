@@ -20,7 +20,6 @@ public class DashboardPage extends BasePageObject {
     private  WebDriver driver;
     private  WebDriverWait wait;
     private  DashboardPageElements dashboardPageElements;
-
     private FilterPageElements filterPageElements;
 
     public DashboardPage(WebDriver driver, WebDriverWait wait) {
@@ -108,5 +107,41 @@ public class DashboardPage extends BasePageObject {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//div[@class='count-container'])[1]//strong")));
         String items = filterPageElements.getSizeDisplayed.getText().split(" ")[0];
         return Integer.parseInt(items);
+    }
+
+    public List<WomenPage> getFreshProductItems() {
+        List<WomenPage> products = new ArrayList<>();
+        for (WebElement root : dashboardPageElements.productItems) {
+            products.add(new WomenPage(root));
+        }
+        return products;
+    }
+
+    public boolean areAllPricesInRangeAfterFiltering() {
+        String url = filterPageElements.priceFilter09.getAttribute("href");
+        String priceParam = url.substring(url.indexOf("price=") + 6);
+
+        double min = 0;
+        double max = Double.MAX_VALUE;
+
+        String[] parts = priceParam.split("-");
+        if (parts.length == 1) {
+            max = Double.parseDouble(parts[0]);
+        } else if (parts.length == 2) {
+            if (!parts[0].isEmpty()) min = Double.parseDouble(parts[0]);
+            if (!parts[1].isEmpty()) max = Double.parseDouble(parts[1]);
+        }
+
+        List<WomenPage> freshProducts = getFreshProductItems();
+        for (WomenPage product : freshProducts) {
+            String priceText = product.getPrice();
+            double actualPrice = Double.parseDouble(priceText.replace("$", "").trim());
+
+            if (actualPrice < min || actualPrice > max) {
+                System.out.println("Price out of range: " + actualPrice);
+                return false;
+            }
+        }
+        return true;
     }
 }

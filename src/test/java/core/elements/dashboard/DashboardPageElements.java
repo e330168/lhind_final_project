@@ -4,8 +4,6 @@ import core.utils.DriverProvider;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.pagefactory.DefaultElementLocatorFactory;
-
 import java.util.List;
 
 public class DashboardPageElements {
@@ -16,7 +14,7 @@ public class DashboardPageElements {
     @FindBy(xpath="//p[contains(text(),'Welcome')]")
     public WebElement welcomeMessage;
 
-    @FindBy(xpath="//span[contains(text(), 'Thank you')]")
+    @FindBy(xpath="//span[contains(text(), 'Thank')]")
     public WebElement registerSuccessMessage;
 
     @FindBy(xpath="//ol[@class='nav-primary']/li/a[text()='Women']")

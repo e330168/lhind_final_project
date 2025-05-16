@@ -5,6 +5,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.DefaultElementLocatorFactory;
 
+
 public class WomenPageElements {
     public WomenPageElements(WebElement productRoot) {
         PageFactory.initElements(new DefaultElementLocatorFactory(productRoot), this);
@@ -13,11 +14,18 @@ public class WomenPageElements {
     @FindBy(css = ".product-name")
     public WebElement productName;
 
-    @FindBy(css="img[id*='product-collection-image']")
+    @FindBy(css="img[id*='collection']")
     public WebElement image;
 
-    @FindBy(css = "[id*='product-price']")
+    @FindBy(css = "[id*='product-p']")
     public WebElement price;
+
+    //    .price-box .old-price .price {
+    //        color: #a0a0a0;
+    //        text-decoration: line-through;
+    //    }
+    @FindBy(css="[id*='old']")
+    public WebElement oldPrice;
 
     @FindBy(css = ".product-image")
     public WebElement hoverStyle;
