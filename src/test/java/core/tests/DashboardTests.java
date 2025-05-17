@@ -5,12 +5,16 @@ import core.pages.menu.SalePage;
 import core.pages.menu.WomenPage;
 import core.utils.TestBase;
 import core.utils.UIActions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DashboardTests extends TestBase {
+
 
     @Test
     public void testProductList() {
@@ -25,6 +29,7 @@ public class DashboardTests extends TestBase {
         Assert.assertEquals(itemsCount, 11, "Total number of products in list should be 11.");
     }
 
+    //T3
     @Test
     public void hoverWomenProduct() {
         DashboardPage dashboardPage = new DashboardPage(driver, wait);
@@ -62,6 +67,7 @@ public class DashboardTests extends TestBase {
         Assert.assertEquals(items.size(), 12, "Total number of products in list should be 12.");
     }
 
+    //T5
     @Test
     public void checkPageFilters() {
         logIn();
@@ -80,15 +86,16 @@ public class DashboardTests extends TestBase {
 
         int priceFilterCount = dashboardPage.priceFilterCount();
         int totalProducts = dashboardPage.getProductItems().size();
-        Assert.assertTrue(dashboardPage.areAllPricesInRangeAfterFiltering());
-
 
         Assert.assertEquals(totalProducts, 3, "Total products displayed count should be 3.");
         Assert.assertEquals(totalProducts, priceFilterCount, "Total products displayed count should be 3.");
+
+        Assert.assertTrue(dashboardPage.areAllPricesInRangeAfterFiltering());
     }
 
+    //T4
     @Test
-    public void checkSaleProductsStyle(){
+    public void checkSaleProductsStyle() {
         logIn();
         SalePage salePage = new SalePage(driver, wait);
         salePage.goToSaleViewAll();
@@ -115,6 +122,41 @@ public class DashboardTests extends TestBase {
                     "Final price should have color rgba(51, 153, 204) and no line-through decoration."
             );
         });
+    }
+
+    //T6
+    @Test
+    public void checkSortedByPriceAnd2WilshlistSelected(){
+        logIn();
+        DashboardPage dashboardPage = new DashboardPage(driver, wait);
+        dashboardPage.goToWomenViewAll();
+
+
+        List<Double> prices = dashboardPage.getProductItems().stream()
+                .map(WomenPage::getPrice)
+                .map(p -> p.replace("$", "").trim())
+                .map(Double::parseDouble)
+                .collect(Collectors.toList());
+
+        System.out.println("Unsorted prices: " + prices);
+
+        dashboardPage.clickSortByDropDown();
+
+        List<Double> pricesR = dashboardPage.getProductItems().stream()
+                .map(WomenPage::getPrice)
+                .map(p -> p.replace("$", "").trim())
+                .map(Double::parseDouble)
+                .collect(Collectors.toList());
+
+        List<Double> reg=dashboardPage.getSortedProduct();
+
+        Assert.assertEquals(pricesR, reg, "Prices are not sorted in ascending order.");
+
+//        dashboardPage.addElementToWishList(0);
+//        driver.navigate().back();
+        dashboardPage.getProductItems();
+        dashboardPage.addElementToWishList(1);
+        dashboardPage.check();
     }
 
 }

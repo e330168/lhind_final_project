@@ -48,8 +48,8 @@ public class WomenPageElements {
     @FindBy(css="//a[@name = 'black']")
     public WebElement black;
 
-    @FindBy(css = ".add-to-wishlist")
-    public WebElement addToWishlistButton;
+    @FindBy(xpath = "//a[contains(@data-url, 'wish')]")
+    public WebElement addToWishlisLink;
 
     @FindBy(xpath = "(//*[contains(@class,'ratings')])/following-sibling::div/a")
     public WebElement viewDetailsButton;

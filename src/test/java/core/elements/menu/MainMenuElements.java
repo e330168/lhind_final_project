@@ -13,8 +13,11 @@ public class MainMenuElements {
     @FindBy(xpath = "//a[@data-target-element='#header-account']")
     public WebElement accountMenu;
 
-    @FindBy(xpath = "//div[@class='links'][1]//a[text()='My Account']")
+    @FindBy(xpath = "//div[@class='links']//li[1]//a")
     public WebElement accountSubMenu;
+
+    @FindBy(xpath = "//div[@class='links']//li[2]//a")
+    public WebElement myWishListMenu;
 
     @FindBy(xpath = "//a[@title='Register']")
     public WebElement registerSubMenu;

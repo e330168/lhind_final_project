@@ -4,6 +4,7 @@ import core.elements.menu.MainMenuElements;
 import core.utils.UIActions;
 import core.utils.WaitUtils;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -41,5 +42,14 @@ public class MainMenuPage {
 
         WaitUtils.waitForVisible(driver, mainMenuElements.logOutSubMenu);
         UIActions.click(driver, mainMenuElements.logOutSubMenu);
+    }
+
+    public void goToAccount(){
+        WaitUtils.waitForVisible(driver, mainMenuElements.accountMenu);
+        UIActions.click(driver, mainMenuElements.accountMenu);
+    }
+
+    public WebElement wishList(){
+        return mainMenuElements.myWishListMenu;
     }
 }

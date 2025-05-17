@@ -5,6 +5,8 @@ import core.elements.menu.FilterPageElements;
 import core.elements.menu.WomenPageElements;
 import core.utils.BasePageObject;
 import core.utils.DriverProvider;
+import core.utils.UIActions;
+import core.utils.WaitUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -63,6 +65,12 @@ public class WomenPage extends BasePageObject {
         return womenPageElements.price;
     }
 
+    public WebElement getWishListButton() {return womenPageElements.addToWishlisLink;}
+
+    public void clickOnWishlistL() {
+        WaitUtils.waitForVisible(driver, womenPageElements.addToWishlisLink);
+        UIActions.click(driver, womenPageElements.addToWishlisLink);
+    }
 
     public boolean areShownMultiplePrices() {
         return !getOldPrice().isEmpty() && !getPrice().isEmpty();

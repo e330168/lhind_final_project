@@ -2,19 +2,24 @@ package core.pages.dashboard;
 
 import core.elements.dashboard.DashboardPageElements;
 import core.elements.menu.FilterPageElements;
+import core.pages.menu.MainMenuPage;
 import core.pages.menu.WomenPage;
 import core.utils.BasePageObject;
 import core.utils.UIActions;
 import core.utils.WaitUtils;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class DashboardPage extends BasePageObject {
     private  WebDriver driver;
@@ -94,7 +99,6 @@ public class DashboardPage extends BasePageObject {
             System.out.println("Image: "+ product.getImageSrc());
             System.out.println(" ");
         });
-
         return products;
     }
 
@@ -102,6 +106,7 @@ public class DashboardPage extends BasePageObject {
         WaitUtils.waitForVisible(driver, filterPageElements.priceFilter09);
         UIActions.click(driver, filterPageElements.priceFilter09);
     }
+
 
     public int priceFilterCount(){
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//div[@class='count-container'])[1]//strong")));
@@ -144,4 +149,91 @@ public class DashboardPage extends BasePageObject {
         }
         return true;
     }
+
+    public void clickSortByDropDown() {
+        WaitUtils.waitForVisible(driver, filterPageElements.sortByDropDown);
+        UIActions.click(driver, filterPageElements.sortByDropDown);
+
+        WebElement sortDropDownE = filterPageElements.sortByDropDown;
+        Select sortDropDown = new Select(sortDropDownE);
+        List<WebElement> allOptions = sortDropDown.getOptions();
+
+        WebElement optionPrice = null;
+        for (WebElement option : allOptions) {
+            if (option.getText().trim().equalsIgnoreCase("Price")) {
+                optionPrice = option;
+                break;
+            }
+        }
+
+        System.out.println("Sorted by: " + optionPrice.getText());
+        WaitUtils.waitForVisible(driver, sortDropDownE);
+        UIActions.click(driver, optionPrice);
+    }
+
+
+    public List<Double> getSortedProduct(){
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//select[@title='Sort By']")));
+        List<WebElement> elements = dashboardPageElements.productItems;
+        List<WomenPage> products = new ArrayList<>();
+
+        for (WebElement el : elements) {
+            products.add(new WomenPage(el));
+        }
+
+        List<Double> prices = products.stream()
+                .map(p -> Double.parseDouble(p.getPrice().replace("$", "").trim()))
+                .collect(Collectors.toList());
+
+        List<Double> sortedPrices = new ArrayList<>(prices);
+        Collections.sort(sortedPrices);
+
+        System.out.println("Sorted prices: " + sortedPrices);
+        return sortedPrices;
+    }
+
+    public void addElementToWishList(int productIndex) {
+        List<WomenPage> products = getFreshProductItems();
+        WebElement wishListButton = products.get(productIndex).getWishListButton();
+
+        if (wishListButton.isDisplayed()) {
+            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", wishListButton);
+            wait.until(ExpectedConditions.elementToBeClickable(wishListButton));
+            try {
+                wishListButton.click();
+            } catch (ElementClickInterceptedException e) {
+                ((JavascriptExecutor) driver).executeScript("arguments[0].click();", wishListButton);
+            }
+
+            System.out.println("Wishlist link clicked");
+            System.out.println(products.get(productIndex).getName());
+
+            wait.until(ExpectedConditions.urlContains("wishlist"));
+        }
+    }
+
+    public void check(){
+        wait.until(ExpectedConditions.urlContains("wishlist"));
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@data-target-element='#header-account']")));
+        MainMenuPage menu = new MainMenuPage(driver, wait);
+        menu.goToAccount();
+
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='links']//li[2]//a")));
+        String wishlistText = menu.wishList().getAttribute("title");
+        System.out.println("Wishlist Text: " + wishlistText);
+
+        int itemCount = 0;
+
+        Pattern pattern = Pattern.compile("\\((\\d+) item");
+        Matcher matcher = pattern.matcher(wishlistText);
+
+        if (matcher.find()) {
+            itemCount = Integer.parseInt(matcher.group(1));
+        }
+
+        System.out.println("Number of items in wishlist: " + itemCount);
+        Assert.assertEquals(itemCount, 1, "Wishlist count does not match expected.");
+    }
+
 }
