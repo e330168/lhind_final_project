@@ -17,16 +17,16 @@ public class MyWishListElementsPage{
 //    @FindBy(css=".button.btn-cart")
     public WebElement addToCartButton;
 
-    @FindBy(xpath ="//ul[@id='configurable_swatch_color']//li")
-//    @FindBy(xpath ="//ul[@id='configurable_swatch_color']//a")
+//    @FindBy(xpath ="//ul[@id='configurable_swatch_color']//li")
+    @FindBy(xpath ="//ul[@id='configurable_swatch_color']//a")
     public List<WebElement> selectColor;
 
 
 //    @FindBy(xpath ="//li[@id='option20']")
 //    public WebElement selectColor;
 
-    @FindBy(xpath ="//ul[@id='configurable_swatch_size']//li")
-//    @FindBy(xpath ="//ul[@id='configurable_swatch_size']//li//a")
+//    @FindBy(xpath ="//ul[@id='configurable_swatch_size']//li")
+    @FindBy(xpath ="//ul[@id='configurable_swatch_size']//li//a")
     public List<WebElement> selectSize;
     ;
 
@@ -35,14 +35,16 @@ public class MyWishListElementsPage{
 //    public WebElement selectSize;
 
 //    @FindBy(id = "#map-popup-button")
-    @FindBy(xpath = "//button[@id='map-popup-button']")
+//    @FindBy(xpath = "//button[@id='map-popup-button']")
+    @FindBy(xpath = "//div[@class='add-to-cart-buttons']//button")
     public WebElement addToCartBF;
 
 
     @FindBy(css=".input-text qty")
     public WebElement quantity;
 
-    @FindBy(css=".button btn-update")
+//    @FindBy(css=".button btn-update")
+    @FindBy(xpath="//td[@class='product-cart-actions']//button")
     public WebElement updateQuantity;
 
     @FindBy(xpath="//span[@class='count']")
@@ -55,4 +57,13 @@ public class MyWishListElementsPage{
     @FindBy(xpath="//div[@class='cart-empty']")
     public WebElement emptyCartMessage;
 
+    @FindBy(xpath="//input[@class='input-text qty']")
+    public WebElement quantityInput;
+
+    //td[@class='product-cart-total']//span//span
+    @FindBy(xpath="//td[@class='product-cart-total']//span[@class='price']")
+    public List<WebElement> subtotals;
+
+    @FindBy(xpath="//tfoot//span[@class='price']")
+    public WebElement grandPrice;
 }

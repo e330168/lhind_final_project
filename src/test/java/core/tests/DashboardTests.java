@@ -190,7 +190,13 @@ public class DashboardTests extends TestBase {
     public void ShoppingCart1(){
         logIn();
         MyWishListPage myWishListPage = new MyWishListPage(driver, wait);
-        myWishListPage.test6();
+//        myWishListPage.test6();
+
+       double updatedQ=myWishListPage.changeQuantity();
+       double cartSum= myWishListPage.checkTheGrandPrice();
+       double grandPrice= myWishListPage.getGrandPrice();
+       Assert.assertEquals(updatedQ, 2, "Grand price are not equal.");
+       Assert.assertEquals(cartSum, grandPrice, "Grand price are not equal.");
     }
 
 

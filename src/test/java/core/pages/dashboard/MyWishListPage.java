@@ -13,6 +13,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class MyWishListPage extends BasePageObject {
         private WebDriver driver;
@@ -54,9 +57,11 @@ public class MyWishListPage extends BasePageObject {
 
         WaitUtils.waitForVisible(driver,wishEle.selectColor.get(0));
         UIActions.click(driver, wishEle.selectColor.get(0));
+        System.out.println(wishEle.selectColor.get(0).getAttribute("name"));
 
         WaitUtils.waitForVisible(driver,wishEle.selectSize.get(3));
         UIActions.click(driver, wishEle.selectSize.get(3));
+        System.out.println(wishEle.selectSize.get(3).getAttribute("name"));
 
         ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 500);");
         if (wishEle.addToCartBF.isDisplayed() && wishEle.addToCartBF.isEnabled()) {
@@ -64,6 +69,45 @@ public class MyWishListPage extends BasePageObject {
         } else {
             System.out.println("Add To Cart button is not displayed");
         }
-
     }
+
+
+    public double changeQuantity(){
+        driver.navigate().to("https://ecommerce.tealiumdemo.com/checkout/cart/");
+        wait.until(ExpectedConditions.urlContains("cart"));
+
+        WaitUtils.waitForVisible(driver,wishEle.quantityInput );
+        UIActions.click(driver, wishEle.quantityInput);
+
+        wishEle.quantityInput.clear();
+        wishEle.quantityInput.sendKeys("2");
+
+        UIActions.click(driver,wishEle.updateQuantity);
+
+        wait.until(ExpectedConditions.textToBePresentInElementValue(wishEle.quantityInput,"2"));
+        String valueQ=wishEle.quantityInput.getAttribute("value");
+        System.out.println("Updated Quantity Input :"+valueQ);
+        return Double.parseDouble(valueQ);
+    }
+
+    public double checkTheGrandPrice() {
+//        driver.navigate().to("https://ecommerce.tealiumdemo.com/checkout/cart/");
+        List<Double> prices = wishEle.subtotals.stream()
+                .map(p -> Double.parseDouble(p.getText().replace("$", "").trim()))
+                .collect(Collectors.toList());
+
+        int sum = 0;
+        for (int i = 0; i < prices.size(); i++) {
+            sum += prices.get(i);
+        }
+        System.out.println("Amount of subTotal prices: "+sum);
+        return sum;
+    }
+
+    public double getGrandPrice() {
+        String p=wishEle.grandPrice.getText();
+        return Double.parseDouble(p.replace("$", "").trim());
+    }
+
+
 }
