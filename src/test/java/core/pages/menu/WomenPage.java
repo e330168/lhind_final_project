@@ -11,6 +11,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.List;
+
 public class WomenPage extends BasePageObject {
     private WomenPageElements womenPageElements;
     private FilterPageElements filterPageElements;
@@ -66,11 +68,6 @@ public class WomenPage extends BasePageObject {
     }
 
     public WebElement getWishListButton() {return womenPageElements.addToWishlisLink;}
-
-    public void clickOnWishlistL() {
-        WaitUtils.waitForVisible(driver, womenPageElements.addToWishlisLink);
-        UIActions.click(driver, womenPageElements.addToWishlisLink);
-    }
 
     public boolean areShownMultiplePrices() {
         return !getOldPrice().isEmpty() && !getPrice().isEmpty();

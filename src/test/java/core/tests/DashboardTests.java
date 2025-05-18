@@ -1,15 +1,21 @@
 package core.tests;
 
+import core.pages.cookies.CookieConsentPage;
 import core.pages.dashboard.DashboardPage;
+import core.pages.dashboard.MyWishListPage;
 import core.pages.menu.SalePage;
 import core.pages.menu.WomenPage;
 import core.utils.TestBase;
 import core.utils.UIActions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -126,7 +132,7 @@ public class DashboardTests extends TestBase {
 
     //T6
     @Test
-    public void checkSortedByPriceAnd2WilshlistSelected(){
+    public void checkSortedByPriceAnd2WishListSelected(){
         logIn();
         DashboardPage dashboardPage = new DashboardPage(driver, wait);
         dashboardPage.goToWomenViewAll();
@@ -152,11 +158,40 @@ public class DashboardTests extends TestBase {
 
         Assert.assertEquals(pricesR, reg, "Prices are not sorted in ascending order.");
 
-//        dashboardPage.addElementToWishList(0);
-//        driver.navigate().back();
-        dashboardPage.getProductItems();
-        dashboardPage.addElementToWishList(1);
-        dashboardPage.check();
+        dashboardPage.addToWishList(0);
+        driver.navigate().to("https://ecommerce.tealiumdemo.com/women.html?dir=asc&order=price");
+        dashboardPage.getFreshProductItems();
+        dashboardPage.addToWishList(1);
+
+        int nrWishListProd=dashboardPage.nrItemsWishListSubMenu();
+        Assert.assertEquals(nrWishListProd, 2, "Wishlist count does not match expected.");
     }
+
+    //T7
+    @Test(dependsOnMethods = {"checkSortedByPriceAnd2WishListSelected"})
+    public void ShoppingCart(){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+        WebElement optinCheckbox = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("privacy_pref_optin")));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", optinCheckbox);
+        wait.until(ExpectedConditions.elementToBeClickable(optinCheckbox)).click();
+
+        MyWishListPage myWishListPage = new MyWishListPage(driver, wait);
+        myWishListPage.goToMyWishList();
+
+//        if(!driver.getCurrentUrl().contains("wishlist")){
+//            CookieConsentPage cookiePage = new CookieConsentPage();
+//            cookiePage.acceptCookies(wait);
+//        }
+//        myWishListPage.test6();
+    }
+
+
+    @Test
+    public void ShoppingCart1(){
+        logIn();
+        MyWishListPage myWishListPage = new MyWishListPage(driver, wait);
+        myWishListPage.test6();
+    }
+
 
 }

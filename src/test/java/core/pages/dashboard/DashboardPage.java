@@ -12,8 +12,8 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -54,19 +54,19 @@ public class DashboardPage extends BasePageObject {
         for (WebElement product : dashboardPageElements.productItems) {
             items.add(new WomenPage(product));
         }
-        System.out.println("Total products: " + items.size());
-        System.out.println("Product details: :");
-        System.out.println(" ");
-        items.forEach(item -> {
-            String name = item.getName();
-            String price = item.getPrice();
-            String image = item.getImageSrc();
-
-            System.out.println("Name: " + name);
-            System.out.println("Price: " + price);
-            System.out.println("Image: " + image);
-            System.out.println(" ");
-        });
+//        System.out.println("Total products: " + items.size());
+//        System.out.println("Product details: :");
+//        System.out.println(" ");
+//        items.forEach(item -> {
+//            String name = item.getName();
+//            String price = item.getPrice();
+//            String image = item.getImageSrc();
+//
+//            System.out.println("Name: " + name);
+//            System.out.println("Price: " + price);
+//            System.out.println("Image: " + image);
+//            System.out.println(" ");
+//        });
         return items;
     }
 
@@ -192,32 +192,30 @@ public class DashboardPage extends BasePageObject {
         return sortedPrices;
     }
 
-    public void addElementToWishList(int productIndex) {
-        List<WomenPage> products = getFreshProductItems();
+    public void addToWishList(int productIndex) {
+        List<WomenPage> products = new ArrayList<>();
+        for (WebElement product : dashboardPageElements.productItems) {
+            products.add(new WomenPage(product));
+        }
         WebElement wishListButton = products.get(productIndex).getWishListButton();
 
-        if (wishListButton.isDisplayed()) {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", wishListButton);
-            wait.until(ExpectedConditions.elementToBeClickable(wishListButton));
-            try {
-                wishListButton.click();
-            } catch (ElementClickInterceptedException e) {
-                ((JavascriptExecutor) driver).executeScript("arguments[0].click();", wishListButton);
-            }
+        System.out.println("Name " + products.get(productIndex).getName());
+        UIActions.click(driver, wishListButton);
+        System.out.println("Link " +wishListButton.getAttribute("data-url"));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
+        WebElement successMsg = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='my-wishlist']//h1"))
+        );
 
-            System.out.println("Wishlist link clicked");
-            System.out.println(products.get(productIndex).getName());
-
-            wait.until(ExpectedConditions.urlContains("wishlist"));
-        }
+        System.out.println("Product added to wishlist"+ successMsg.getText());
     }
 
-    public void check(){
+    public int nrItemsWishListSubMenu(){
         wait.until(ExpectedConditions.urlContains("wishlist"));
+
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@data-target-element='#header-account']")));
         MainMenuPage menu = new MainMenuPage(driver, wait);
         menu.goToAccount();
-
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='links']//li[2]//a")));
         String wishlistText = menu.wishList().getAttribute("title");
@@ -231,9 +229,8 @@ public class DashboardPage extends BasePageObject {
         if (matcher.find()) {
             itemCount = Integer.parseInt(matcher.group(1));
         }
-
         System.out.println("Number of items in wishlist: " + itemCount);
-        Assert.assertEquals(itemCount, 1, "Wishlist count does not match expected.");
+        return itemCount;
     }
 
 }

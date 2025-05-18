@@ -6,7 +6,9 @@ import core.pages.cookies.CookieConsentPage;
 import core.pages.menu.MainMenuPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 
 import java.lang.reflect.Method;
@@ -34,8 +36,12 @@ public class TestBase {
     }
 
     @AfterMethod
-    public void tearDown() {
-            if (driver != null) {
+    public void tearDown(ITestResult result) {
+        if (result.getMethod().getMethodName().equals("checkSortedByPriceAnd2WishListSelected") &&
+                result.getStatus() == ITestResult.SUCCESS) {
+            return;
+        }
+        if (driver != null) {
                 driver.quit();
                 driver = null;
             }

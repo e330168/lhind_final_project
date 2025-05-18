@@ -5,6 +5,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.DefaultElementLocatorFactory;
 
+import java.util.List;
+
 
 public class WomenPageElements {
     public WomenPageElements(WebElement productRoot) {
@@ -48,7 +50,9 @@ public class WomenPageElements {
     @FindBy(css="//a[@name = 'black']")
     public WebElement black;
 
-    @FindBy(xpath = "//a[contains(@data-url, 'wish')]")
+//    @FindBy(xpath = "//a[contains(@data-url, 'wish')]")
+//    @FindBy(xpath = "//ul[@class='add-to-links']//li[1]//a")
+    @FindBy(css=".link-wishlist")
     public WebElement addToWishlisLink;
 
     @FindBy(xpath = "(//*[contains(@class,'ratings')])/following-sibling::div/a")
