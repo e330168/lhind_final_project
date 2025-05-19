@@ -1,10 +1,7 @@
 package core.pages.wishlist_cart;
 
 import core.utils.BasePageObject;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -23,9 +20,9 @@ public class ProductConfigPage extends BasePageObject {
 
     public void selectColor() {
         List<WebElement> colorOptions = driver.findElements(By.xpath("//li[contains(@class,'is-media')]"));
-
         if (!colorOptions.isEmpty()) {
             WebElement firstColorLink = colorOptions.get(0).findElement(By.tagName("a"));
+            System.out.println(firstColorLink.getText()+" firstColor");
             ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", firstColorLink);
             firstColorLink.click();
         } else {
@@ -33,19 +30,28 @@ public class ProductConfigPage extends BasePageObject {
         }
     }
 
-    public void selectSize(){
-        List<WebElement> optionElements = driver.findElements(By.xpath("//li[contains(@class,'option-')]"));
-        if (!optionElements.isEmpty()) {
-            WebElement firstOptionLink = optionElements.get(0).findElement(By.tagName("a"));
-            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", firstOptionLink);
-            firstOptionLink.click();
+    public void selectSize() {
+        List<WebElement> sizeOptions = driver.findElements(By.xpath("//ul[@id='configurable_swatch_size']//li[not(contains(@class, 'not-available'))]"));
+        if (!sizeOptions.isEmpty()) {
+            WebElement firstSizeLink = sizeOptions.get(0).findElement(By.tagName("a"));
+            System.out.println(firstSizeLink.getText()+" firstSize");
+            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", firstSizeLink);
+            firstSizeLink.click();
         } else {
-            System.out.println("No option elements found");
+            System.out.println("No size options found.");
         }
     }
 
     public void addToCart() {
-        WebElement addToCartBtn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='add-to-cart-buttons']//button")));
-        addToCartBtn.click();
+        WebElement button = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='add-to-cart-buttons']//button")));
+
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", button);
+        wait.until(ExpectedConditions.elementToBeClickable(button));
+        try {
+            button.click();
+        } catch (ElementClickInterceptedException e) {
+            System.out.println("Click intercepted, using JS click.");
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", button);
+        }
     }
 }

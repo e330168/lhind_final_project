@@ -16,6 +16,9 @@ public class AccountCartMenuElements {
     @FindBy(xpath = "//div[@class='links']//li[2]//a")
     public WebElement myWishListMenu;
 
+    @FindBy(xpath = "//div[@class='links']//li[3]//a")
+    public WebElement cartMenu;
+
     @FindBy(xpath = "//a[@title='Register']")
     public WebElement registerSubMenu;
 

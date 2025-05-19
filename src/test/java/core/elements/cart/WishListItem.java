@@ -1,67 +1,72 @@
 package core.elements.cart;
 
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.pagefactory.DefaultElementLocatorFactory;
-
-import java.util.List;
 
 public class WishListItem {
     private final WishListElements elements;
+    private final WebElement rowRoot;
 
-//    public WishListItem(WebElement rowRoot) {
-//        PageFactory.initElements(new DefaultElementLocatorFactory(rowRoot), this);
-//    }
-
-    public WishListItem getItem(WebElement root) {
-        return new WishListItem(root);
+    public WishListItem(WebElement rowRoot) {
+        this.rowRoot = rowRoot;
+        this.elements = new WishListElements(rowRoot);
     }
 
-    public WishListItem(WebElement root) {
-        this.elements = new WishListElements(root);
+    public WebElement getRowRoot() {
+        return rowRoot;
     }
 
     public String getName() {
         return elements.productName.getText();
     }
 
-    public WebElement getPrice() {
-        return elements.price;
-    }
-
-//    public List<WebElement> getColor() {
-//        return elements.selectColor;
-//    }
-
-    public WebElement getColor() {
-        return elements.selectColor;
-    }
-
-    public List<WebElement> getSizeP() {
-        return elements.selectSize;
-    }
-
     public WebElement addToCart() {return elements.addToCartButton;}
-
-    public WebElement addToCartBF() {
-        return elements.addToCartButton;
-    }
-
-    public WebElement updateQuantity() {
-        return elements.addToCartButton;
-    }
 
     public WebElement quantityInput() {
         return elements.quantityInput;
     }
-
-    public List<WebElement> getSubTotalPrice() {
-        return elements.subtotals;
+    public void setQuantity(int quantity) {
+        WebElement qtyInput = elements.quantityInput;
+        qtyInput.clear();
+        qtyInput.sendKeys(String.valueOf(quantity));
     }
 
-    public WebElement getGrandPrice() {
-        return elements.grandPrice;
+    public void clickUpdate() {
+        WebElement updateButton = elements.updateQuantity;
+        updateButton.click();
     }
 
+    public double getSubtotalPrice() {
+        String priceText = elements.subtotals.getText();
+        return parsePrice(priceText);
+    }
+
+    private double parsePrice(String priceText) {
+        return Double.parseDouble(priceText.replace("$", "").trim());
+    }
+
+    public WebElement clickDelete() {
+        return elements.deleteBin;
+    }
+
+//
+//    public WebElement addToCartBF() {
+//        return elements.addToCartButton;
+//    }
+//
+//    public double getGrandTotal() {
+//        String totalText = elements.price.getText();
+//        return parsePrice(totalText);
+//    }
+//
+//    public WebElement getPrice() {
+//        return elements.price;
+//    }
+//    public WebElement getColor() {
+//        return elements.selectColor;
+//    }
+//
+//    public List<WebElement> getSizeP() {
+//        return elements.selectSize;
+//    }
 
 }

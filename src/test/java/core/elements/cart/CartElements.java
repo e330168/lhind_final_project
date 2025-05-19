@@ -12,14 +12,16 @@ public class CartElements {
     public CartElements() {
         PageFactory.initElements(DriverProvider.getDriver(), this);
     }
+
     @FindBy(xpath ="//table[@id='shopping-cart-table']//tbody//tr")
     public List<WebElement> productsOnCart;
 
-    //    @FindBy(xpath="//tr[@class='first last odd']//td[6]/a")
-//    @FindBy(css=".btn-remove ,btn-remove2")
-    @FindBy(xpath="//tbody//td[6]//a")
+    @FindBy(xpath=".//td[@class='a-center product-cart-remove last']//a")
     public WebElement deleteBin;
 
     @FindBy(xpath="//span[@class='count']")
     public WebElement nrOfCartProd;
+
+    @FindBy(xpath="//tfoot//span[@class='price']")
+    public WebElement grandPrice;
 }
