@@ -121,6 +121,27 @@ public class ProductsGridPage extends BasePageObject {
         return products;
     }
 
+    public List<Double> getSortedPricesAfterFilter(){
+        List<Double> prices =getProductItems().stream()
+                .map(ProductItemPage::getPrice)
+                .map(p -> p.replace("$", "").trim())
+                .map(Double::parseDouble)
+                .collect(Collectors.toList());
+
+        System.out.println("Unsorted pricesF: " + prices);
+
+        clickSortByDropDown();
+
+        List<Double> pricesR=getProductItems().stream()
+                .map(ProductItemPage::getPrice)
+                .map(p -> p.replace("$", "").trim())
+                .map(Double::parseDouble)
+                .collect(Collectors.toList());
+
+        System.out.println("Sorted pricesF: " + pricesR);
+        return pricesR;
+    }
+
     public boolean areAllPricesInRangeAfterFiltering() {
         String url = filterPageElements.priceFilter09.getAttribute("href");
         String priceParam = url.substring(url.indexOf("price=") + 6);
@@ -171,24 +192,15 @@ public class ProductsGridPage extends BasePageObject {
     }
 
 
-    public List<Double> getSortedProduct(){
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//select[@title='Sort By']")));
-        List<WebElement> elements = productsGridPageElements.productItems;
-        List<ProductItemPage> products = new ArrayList<>();
-
-        for (WebElement el : elements) {
-            products.add(new ProductItemPage(el));
-        }
-
-        List<Double> prices = products.stream()
-                .map(p -> Double.parseDouble(p.getPrice().replace("$", "").trim()))
+    public List<Double> sortedPriceCollection(){
+        List<Double> prices =getProductItems().stream()
+                .map(ProductItemPage::getPrice)
+                .map(p -> p.replace("$", "").trim())
+                .map(Double::parseDouble)
                 .collect(Collectors.toList());
 
-        List<Double> sortedPrices = new ArrayList<>(prices);
-        Collections.sort(sortedPrices);
-
-        System.out.println("Sorted prices: " + sortedPrices);
-        return sortedPrices;
+        System.out.println("Sorted pricesC: " + prices);
+        return prices;
     }
 
     public void addToWishList(int productIndex) {

@@ -1,7 +1,7 @@
 package core.tests;
 
-import core.elements.cart.WishListItem;
 import core.pages.dashboard.ProductsGridPage;
+import core.pages.menu.MainMenuPage;
 import core.pages.wishlist_cart.CartPage;
 import core.pages.wishlist_cart.WishListPage;
 import core.pages.dashboard.SalePage;
@@ -12,7 +12,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.testng.Assert.assertEquals;
 
@@ -20,7 +19,6 @@ public class Tests extends TestBase {
 
     @Test
     public void testProductList() {
-        logIn();
         ProductsGridPage ProductsGridPage = new ProductsGridPage(driver, wait);
         ProductsGridPage.goToWomenViewAll();
 
@@ -60,7 +58,6 @@ public class Tests extends TestBase {
 
     @Test
     public void testMenProductList() {
-        logIn();
         ProductsGridPage ProductsGridPage = new ProductsGridPage(driver, wait);
         ProductsGridPage.goToMenViewAll();
 
@@ -72,7 +69,6 @@ public class Tests extends TestBase {
     //T4
     @Test
     public void checkSaleProductsStyle() {
-        logIn();
         SalePage salePage = new SalePage(driver, wait);
         salePage.goToSaleViewAll();
         salePage.getProductItems();
@@ -103,7 +99,6 @@ public class Tests extends TestBase {
     //T5
     @Test
     public void checkPageFilters() {
-        logIn();
         ProductsGridPage ProductsGridPage = new ProductsGridPage(driver, wait);
         ProductsGridPage.goToMenViewAll();
         ProductsGridPage.selectColor();
@@ -129,34 +124,16 @@ public class Tests extends TestBase {
     //T6
     @Test
     public void checkSortedByPriceAnd2WishListSelected() {
-        logIn();
         ProductsGridPage ProductsGridPage = new ProductsGridPage(driver, wait);
         ProductsGridPage.goToWomenViewAll();
 
-
-        List<Double> prices = ProductsGridPage.getProductItems().stream()
-                .map(ProductItemPage::getPrice)
-                .map(p -> p.replace("$", "").trim())
-                .map(Double::parseDouble)
-                .collect(Collectors.toList());
-
-        System.out.println("Unsorted prices: " + prices);
-
-        ProductsGridPage.clickSortByDropDown();
-
-        List<Double> pricesR = ProductsGridPage.getProductItems().stream()
-                .map(ProductItemPage::getPrice)
-                .map(p -> p.replace("$", "").trim())
-                .map(Double::parseDouble)
-                .collect(Collectors.toList());
-
-        List<Double> reg = ProductsGridPage.getSortedProduct();
+        List<Double>pricesR = ProductsGridPage.getSortedPricesAfterFilter();
+        List<Double> reg = ProductsGridPage.sortedPriceCollection();
 
         assertEquals(pricesR, reg, "Prices are not sorted in ascending order.");
 
         ProductsGridPage.addToWishList(0);
-        driver.navigate().to("https://ecommerce.tealiumdemo.com/women.html?dir=asc&order=price");
-        ProductsGridPage.getFreshProductItems();
+        driver.navigate().back();
         ProductsGridPage.addToWishList(1);
 
         int nrWishListProd = ProductsGridPage.nrItemsWishListSubMenu();
@@ -165,36 +142,35 @@ public class Tests extends TestBase {
 
 
     //T7
-    //    @Test(dependsOnMethods = {"checkSortedByPriceAnd2WishListSelected"})
-    @Test
+    @Test(dependsOnMethods = {"checkSortedByPriceAnd2WishListSelected"})
     public void shoppingCart() {
-        logIn();
-        driver.navigate().to("https://ecommerce.tealiumdemo.com/wishlist/");
+        WishListPage wishListPage = new WishListPage(driver, wait);
+        MainMenuPage mainMenuPage = new MainMenuPage(driver, wait);
 
-        WishListPage cartPage = new WishListPage(driver, wait);
-        cartPage.addToCart();
+        mainMenuPage.goToMyWishList();
+        wishListPage.addToCart();
 
-//        CartPage cartPage2 = new CartPage(driver, wait);
-//        cartPage.goToShoppingCart();
-//        double updatedQ = cartPage2.verifyCartTotalAfterQuantityUpdate();
-//        assertEquals(updatedQ, 2, "Quantity is not updated to 2.");
-//
-//        double actualTotal = cartPage2.checkTheGrandPrice();
-//        double expectedTotal = cartPage2.getGrandTotal();
-//        System.out.println("Subtotal Sum: $" + expectedTotal);
-//        System.out.println("Grand Total:  $" + actualTotal);
-//
-//        assertEquals(actualTotal, expectedTotal, " Grand total doesn't match the sum of item subtotals.");
+        CartPage cartPage = new CartPage(driver, wait);
+        mainMenuPage.goToShoppingCart();
+        double updatedQ = cartPage.verifyCartTotalAfterQuantityUpdate();
+        assertEquals(updatedQ, 2, "Quantity is not updated to 2.");
+
+        double actualTotal = cartPage.checkTheGrandPrice();
+        double expectedTotal = cartPage.getGrandTotal();
+        System.out.println("Subtotal Sum: $" + expectedTotal);
+        System.out.println("Grand Total:  $" + actualTotal);
+
+        assertEquals(actualTotal, expectedTotal, " Grand total doesn't match the sum of item subtotals.");
     }
 
 
     //T8
-    //        @Test(dependsOnMethods = {"shoppingCart"})
+//    @Test(dependsOnMethods = {"shoppingCart"})
     @Test
     public void emptyShoppingCart(){
-        logIn();
-        driver.navigate().to("https://ecommerce.tealiumdemo.com/checkout/cart/");
         CartPage cartPage = new CartPage(driver, wait);
+        MainMenuPage mainMenuPage = new MainMenuPage(driver, wait);
+        mainMenuPage.goToShoppingCart();
 
         cartPage.getCartItems();
         System.out.println(cartPage.getCartItems().size());
@@ -205,33 +181,5 @@ public class Tests extends TestBase {
 
 //        boolean isDeleted=cartPage.removeFirstProductFromCart();
 //        Assert.assertTrue(isDeleted, "First cart item should be deleted successfully.");
-    }
-
-    @Test
-    public void updateQuantity() {
-        logIn();
-        WishListPage cartPage = new WishListPage(driver, wait);
-        CartPage cartPage2 = new CartPage(driver, wait);
-
-        cartPage.goToShoppingCart();
-        double updatedQ = cartPage2.verifyCartTotalAfterQuantityUpdate();
-        assertEquals(updatedQ, 2, "Quantity is not updated to 2.");
-    }
-
-    @Test
-    public void compareTotalSumGrand() {
-        logIn();
-        WishListPage cartPage = new WishListPage(driver, wait);
-        CartPage cartPage2 = new CartPage(driver, wait);
-
-        cartPage.goToShoppingCart();
-
-
-        double actualTotal = cartPage2.checkTheGrandPrice();
-        double expectedTotal = cartPage2.getGrandTotal();
-        System.out.println("Subtotal Sum: $" + expectedTotal);
-        System.out.println("Grand Total:  $" + actualTotal);
-
-        assertEquals(actualTotal, expectedTotal, " Grand total doesn't match the sum of item subtotals.");
     }
 }

@@ -3,6 +3,8 @@ package core.pages.wishlist_cart;
 import core.elements.cart.CartElements;
 import core.elements.cart.WishListItem;
 import core.utils.BasePageObject;
+import core.utils.UIActions;
+import core.utils.WaitUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -37,8 +39,9 @@ public class CartPage extends BasePageObject {
         return parsePrice(totalText);
     }
 
-    private double parsePrice(String text) {
-        return Double.parseDouble(text.replace("$", "").replace(",", "").trim());
+    public double parsePrice(String priceText) {
+        String cleaned = priceText.replace(",", "").replace("$", "").trim();
+        return Double.parseDouble(cleaned);
     }
 
     public double verifyCartTotalAfterQuantityUpdate() {

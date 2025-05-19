@@ -52,4 +52,21 @@ public class MainMenuPage {
     public WebElement wishList(){
         return mainMenuElements.myWishListMenu;
     }
+
+    public void goToShoppingCart() {
+        WaitUtils.waitForVisible(driver, mainMenuElements.accountMenu);
+        UIActions.click(driver, mainMenuElements.accountMenu);
+
+        WaitUtils.waitForVisible(driver, mainMenuElements.cartMenu);
+        UIActions.click(driver, mainMenuElements.cartMenu);
+    }
+
+    public void goToMyWishList() {
+        WaitUtils.waitForVisible(driver, mainMenuElements.accountMenu);
+        UIActions.click(driver, mainMenuElements.accountMenu);
+
+        WaitUtils.waitForVisible(driver, mainMenuElements.myWishListMenu);
+        UIActions.click(driver, mainMenuElements.myWishListMenu);
+    }
+
 }

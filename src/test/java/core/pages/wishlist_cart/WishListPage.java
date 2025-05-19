@@ -2,6 +2,7 @@ package core.pages.wishlist_cart;
 
 import core.elements.cart.WishListItem;
 import core.elements.menu.AccountCartMenuElements;
+import core.pages.menu.MainMenuPage;
 import core.utils.BasePageObject;
 import core.utils.UIActions;
 import core.utils.WaitUtils;
@@ -17,12 +18,14 @@ public class WishListPage extends BasePageObject {
         private  WebDriverWait wait;
         private  AccountCartMenuElements mainMenu;
         private WishListItem wishListItem;
+        private MainMenuPage mainMenuPage;
 
     public WishListPage(WebDriver driver, WebDriverWait wait) {
         super(driver);
         this.driver = driver;
         this.wait = wait;
         this.mainMenu = new AccountCartMenuElements();
+        this.mainMenuPage = new MainMenuPage(driver, wait);
     }
 
     public List<WishListItem> getItems() {
@@ -38,26 +41,6 @@ public class WishListPage extends BasePageObject {
         WebElement addToCartBtn = items.get(index).addToCart();
         WaitUtils.waitForVisible(driver, addToCartBtn);
         UIActions.click(driver, addToCartBtn);
-    }
-
-    public int getItemCount() {
-        return getItems().size();
-    }
-
-    public void goToMyWishList() {
-        WaitUtils.waitForVisible(driver, mainMenu.accountMenu);
-        UIActions.click(driver, mainMenu.accountMenu);
-
-        WaitUtils.waitForVisible(driver, mainMenu.myWishListMenu);
-        UIActions.click(driver, mainMenu.myWishListMenu);
-    }
-
-    public void goToShoppingCart() {
-        WaitUtils.waitForVisible(driver, mainMenu.accountMenu);
-        UIActions.click(driver, mainMenu.accountMenu);
-
-        WaitUtils.waitForVisible(driver, mainMenu.cartMenu);
-        UIActions.click(driver, mainMenu.cartMenu);
     }
 
     public void addToCart() {

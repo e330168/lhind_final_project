@@ -37,11 +37,8 @@ public class WishListItem {
 
     public double getSubtotalPrice() {
         String priceText = elements.subtotals.getText();
-        return parsePrice(priceText);
-    }
-
-    private double parsePrice(String priceText) {
-        return Double.parseDouble(priceText.replace("$", "").trim());
+        priceText = priceText.replace(",", "").replace("$", "").trim();
+        return Double.parseDouble(priceText);
     }
 
     public WebElement clickDelete() {

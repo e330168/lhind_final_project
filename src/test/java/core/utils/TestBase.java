@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import java.lang.reflect.Method;
 import java.time.Duration;
@@ -22,9 +23,19 @@ public class TestBase {
         driver = DriverProvider.getDriver();
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         driver.get(AppConstants.BASE_URL);
+
         CookieConsentPage cookiePage = new CookieConsentPage();
         cookiePage.acceptCookies(wait);
+
+        Test testAnnotation = method.getAnnotation(Test.class);
+        if (testAnnotation != null) {
+            String[] depends = testAnnotation.dependsOnMethods();
+            if (depends.length == 0) {
+                logIn();
+            }
+        }
     }
+
 
     public void logIn() {
         driver.get(AppConstants.BASE_URL);
