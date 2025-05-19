@@ -198,11 +198,13 @@ public class Tests extends TestBase {
 
         cartPage.getCartItems();
         System.out.println(cartPage.getCartItems().size());
+        int finalCount = cartPage.deleteAllItemsFromCart();
 
-        cartPage.deleteFirstItemFromCart();
-//        System.out.println(cartPage.getProductItems().size());
-//        cartPage.elementsInCart();
-//        System.out.println(cartPage.elementsInCart());
+        assertEquals(finalCount, 0, "Cart should be empty after deleting all items.");
+        assertEquals(cartPage.isCartEmptyMessageDisplayed(), true);
+
+//        boolean isDeleted=cartPage.removeFirstProductFromCart();
+//        Assert.assertTrue(isDeleted, "First cart item should be deleted successfully.");
     }
 
     @Test

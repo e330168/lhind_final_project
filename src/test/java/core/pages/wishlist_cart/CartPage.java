@@ -3,9 +3,7 @@ package core.pages.wishlist_cart;
 import core.elements.cart.CartElements;
 import core.elements.cart.WishListItem;
 import core.utils.BasePageObject;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -76,17 +74,49 @@ public class CartPage extends BasePageObject {
             return sum;
         }
 
-    public void deleteFirstItemFromCart() {
-        List<WishListItem> items = getCartItems();
-        if (!items.isEmpty()) {
+    public int deleteAllItemsFromCart() {
+        By itemRowsLocator = By.xpath("//table[@id='shopping-cart-table']//tbody//tr");
+
+        List<WebElement> rows = driver.findElements(itemRowsLocator);
+        int previousCount = rows.size();
+
+        while (previousCount > 0) {
+            List<WishListItem> items = getCartItems();
             WishListItem firstItem = items.get(0);
             firstItem.clickDelete().click();
-            wait.until(ExpectedConditions.stalenessOf(firstItem.getRowRoot()));
-            System.out.println("First item removed from cart.");
-        } else {
-            System.out.println("Cart is already empty.");
+
+            int finalPreviousCount = previousCount;
+            wait.until(driver -> {
+                List<WebElement> updatedRows = driver.findElements(itemRowsLocator);
+                return updatedRows.size() < finalPreviousCount;
+            });
+            previousCount--;
+            System.out.println("Item removed. Remaining: " + previousCount);
         }
+
+        System.out.println("Cart is now empty.");
+        return previousCount;
     }
 
+    public boolean isCartEmptyMessageDisplayed() {
+        WebElement emptyMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='cart-empty']//p")));
+        return emptyMessage.getText().contains("You have no items in your shopping cart.");
+    }
+
+    public boolean removeFirstProductFromCart() {
+        List<WishListItem> itemsBefore = getCartItems();
+        int countBefore = itemsBefore.size();
+
+        if (countBefore == 0) {
+            System.out.println(" Cart is already empty.");
+            return false;
+        }
+        WishListItem firstItem = itemsBefore.get(0);
+        firstItem.clickDelete().click();
+        wait.until(ExpectedConditions.stalenessOf(firstItem.getRowRoot()));
+        int countAfter = itemsBefore.size();
+
+        return countAfter == countBefore - 1;
+    }
 }
 
