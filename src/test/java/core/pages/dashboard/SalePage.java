@@ -1,9 +1,7 @@
 package core.pages.dashboard;
 
 import core.elements.dashboard.ProductsElements;
-import core.elements.menu.SaleElements;
 import core.utils.BasePageObject;
-import core.utils.DriverProvider;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -14,28 +12,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SalePage extends BasePageObject {
-    private SaleElements saleElements;
     private ProductsElements productsGridPageElements;
     WebDriver driver;
     WebDriverWait wait;
-
-    public SalePage(WebElement productElement) {
-        super(DriverProvider.getDriver());
-        this.saleElements = new SaleElements(productElement);
-    }
 
     public SalePage(WebDriver driver, WebDriverWait wait) {
         super(driver);
         this.driver = driver;
         this.wait = wait;
-        this.saleElements = new SaleElements(driver);
-        this.productsGridPageElements=new ProductsElements();
+        this.productsGridPageElements = new ProductsElements();
     }
 
     public void goToSaleViewAll() {
         Actions actions = new Actions(driver);
-        actions.moveToElement(saleElements.saleMenu).perform();
-        wait.until(ExpectedConditions.elementToBeClickable(saleElements.saleSubMenu)).click();
+        actions.moveToElement(productsGridPageElements.saleMenu).perform();
+        wait.until(ExpectedConditions.elementToBeClickable(productsGridPageElements.saleSubMenu)).click();
     }
 
     public List<ProductItemPage> getProductItems() {
@@ -50,7 +41,7 @@ public class SalePage extends BasePageObject {
             String name = item.getName();
             String price = item.getPrice();
             String oldPrice = item.getOldPrice();
-            Boolean amountPrices= item.areShownMultiplePrices();
+            boolean amountPrices= item.areShownMultiplePrices();
             String oldC=item.getOriginalPriceStyle().getCssValue("color");
             String oldD=item.getOriginalPriceStyle().getCssValue("text-decoration-line");
             String newC=item.getFinalPrice().getCssValue("color");
@@ -75,12 +66,11 @@ public class SalePage extends BasePageObject {
         return items;
     }
 
-   public List<ProductItemPage> checkMultiplePrices() {
+   public void checkMultiplePrices() {
        List<ProductItemPage> items = new ArrayList<>();
        for (WebElement product : productsGridPageElements.productItems) {
            items.add(new ProductItemPage(product));
        }
        items.forEach(ProductItemPage::areShownMultiplePrices);
-       return items;
    }
 }

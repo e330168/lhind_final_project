@@ -31,4 +31,10 @@ public class ProductsElements {
 
     @FindBy(xpath = "//a[text()='View All Men']")
     public WebElement menSubMenu;
+
+    @FindBy(xpath="//ol[@class='nav-primary']/li/a[text()='Sale']")
+    public WebElement saleMenu;
+
+    @FindBy(xpath="//a[text()='View All Sale']")
+    public WebElement saleSubMenu;
 }
