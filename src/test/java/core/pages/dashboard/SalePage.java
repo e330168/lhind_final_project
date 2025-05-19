@@ -1,7 +1,7 @@
-package core.pages.menu;
+package core.pages.dashboard;
 
-import core.elements.dashboard.DashboardPageElements;
-import core.elements.menu.SalePageElements;
+import core.elements.dashboard.ProductsElements;
+import core.elements.menu.SaleElements;
 import core.utils.BasePageObject;
 import core.utils.DriverProvider;
 import org.openqa.selenium.WebDriver;
@@ -14,34 +14,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SalePage extends BasePageObject {
-    private SalePageElements salePageElements;
-    private DashboardPageElements dashboardPageElements;
+    private SaleElements saleElements;
+    private ProductsElements productsGridPageElements;
     WebDriver driver;
     WebDriverWait wait;
 
     public SalePage(WebElement productElement) {
         super(DriverProvider.getDriver());
-        this.salePageElements = new SalePageElements(productElement);
+        this.saleElements = new SaleElements(productElement);
     }
 
     public SalePage(WebDriver driver, WebDriverWait wait) {
         super(driver);
         this.driver = driver;
         this.wait = wait;
-        this.salePageElements = new SalePageElements(driver);
-        this.dashboardPageElements=new DashboardPageElements();
+        this.saleElements = new SaleElements(driver);
+        this.productsGridPageElements=new ProductsElements();
     }
 
     public void goToSaleViewAll() {
         Actions actions = new Actions(driver);
-        actions.moveToElement(salePageElements.saleMenu).perform();
-        wait.until(ExpectedConditions.elementToBeClickable(salePageElements.saleSubMenu)).click();
+        actions.moveToElement(saleElements.saleMenu).perform();
+        wait.until(ExpectedConditions.elementToBeClickable(saleElements.saleSubMenu)).click();
     }
 
-    public List<WomenPage> getProductItems() {
-        List<WomenPage> items = new ArrayList<>();
-        for (WebElement product : dashboardPageElements.productItems) {
-            items.add(new WomenPage(product));
+    public List<ProductItemPage> getProductItems() {
+        List<ProductItemPage> items = new ArrayList<>();
+        for (WebElement product : productsGridPageElements.productItems) {
+            items.add(new ProductItemPage(product));
         }
         System.out.println("Total products: " + items.size());
         System.out.println("Product details: ");
@@ -75,12 +75,12 @@ public class SalePage extends BasePageObject {
         return items;
     }
 
-   public List<WomenPage> checkMultiplePrices() {
-       List<WomenPage> items = new ArrayList<>();
-       for (WebElement product : dashboardPageElements.productItems) {
-           items.add(new WomenPage(product));
+   public List<ProductItemPage> checkMultiplePrices() {
+       List<ProductItemPage> items = new ArrayList<>();
+       for (WebElement product : productsGridPageElements.productItems) {
+           items.add(new ProductItemPage(product));
        }
-       items.forEach(WomenPage::areShownMultiplePrices);
+       items.forEach(ProductItemPage::areShownMultiplePrices);
        return items;
    }
 }

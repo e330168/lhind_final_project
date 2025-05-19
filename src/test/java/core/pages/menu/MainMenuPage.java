@@ -1,6 +1,6 @@
 package core.pages.menu;
 
-import core.elements.menu.MainMenuElements;
+import core.elements.menu.AccountCartMenuElements;
 import core.utils.UIActions;
 import core.utils.WaitUtils;
 import org.openqa.selenium.WebDriver;
@@ -11,13 +11,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class MainMenuPage {
     private WebDriver driver;
     private WebDriverWait wait;
-    private MainMenuElements mainMenuElements;
+    private AccountCartMenuElements mainMenuElements;
 
     public MainMenuPage(WebDriver driver, WebDriverWait wait) {
         this.driver = driver;
         this.wait = wait;
         PageFactory.initElements(driver, this);
-        mainMenuElements = new MainMenuElements();
+        mainMenuElements = new AccountCartMenuElements();
     }
 
     public void goToRegister() {

@@ -1,15 +1,13 @@
-package core.elements.menu;
+package core.elements.dashboard;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.DefaultElementLocatorFactory;
 
-import java.util.List;
 
-
-public class WomenPageElements {
-    public WomenPageElements(WebElement productRoot) {
+public class ProductItemElements {
+    public ProductItemElements(WebElement productRoot) {
         PageFactory.initElements(new DefaultElementLocatorFactory(productRoot), this);
     }
 
@@ -35,27 +33,12 @@ public class WomenPageElements {
 //    .configurable-swatch-list .selected .swatch-link,.swatch-link:hover {
 //        border-color: #3399cc;
 //    }
-
-//    @FindBy(xpath = "//*[contains(@class, 'selected')]")
-//    @FindBy(xpath = "//li[contains(@class, 'selected')]")
     @FindBy(xpath = "//a[contains(@name, 'black')]")
     public WebElement selectedColor;
-
-    //a[@name = "black"]
-    //*[contains(@class, 'has-image swatch-link')]
-
-    @FindBy(css = "[class*='filter-match']")
-    public WebElement filterMatch;
-
-    @FindBy(css="//a[@name = 'black']")
-    public WebElement black;
 
 //    @FindBy(xpath = "//a[contains(@data-url, 'wish')]")
 //    @FindBy(xpath = "//ul[@class='add-to-links']//li[1]//a")
     @FindBy(css=".link-wishlist")
     public WebElement addToWishlisLink;
-
-    @FindBy(xpath = "(//*[contains(@class,'ratings')])/following-sibling::div/a")
-    public WebElement viewDetailsButton;
 
 }

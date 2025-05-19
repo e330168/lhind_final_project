@@ -6,12 +6,12 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.DefaultElementLocatorFactory;
 
-public class SalePageElements {
-    public SalePageElements(WebElement productRoot) {
+public class SaleElements {
+    public SaleElements(WebElement productRoot) {
         PageFactory.initElements(new DefaultElementLocatorFactory(productRoot), this);
     }
 
-    public SalePageElements(WebDriver driver) {
+    public SaleElements(WebDriver driver) {
         PageFactory.initElements(driver, this);
     }
 

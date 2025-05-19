@@ -1,73 +1,68 @@
-package core.pages.menu;
+package core.pages.dashboard;
 
-import core.elements.dashboard.DashboardPageElements;
-import core.elements.menu.FilterPageElements;
-import core.elements.menu.WomenPageElements;
+import core.elements.dashboard.ProductItemElements;
+import core.elements.menu.ShopByFilterElements;
 import core.utils.BasePageObject;
 import core.utils.DriverProvider;
-import core.utils.UIActions;
-import core.utils.WaitUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.util.List;
-
-public class WomenPage extends BasePageObject {
-    private WomenPageElements womenPageElements;
-    private FilterPageElements filterPageElements;
+public class ProductItemPage extends BasePageObject {
+    private ProductItemElements productItemElements;
+    private ShopByFilterElements filterPageElements;
     private WebDriver driver;
     private WebDriverWait wait;
 
-    public WomenPage(WebElement productElement) {
+    public ProductItemPage(WebElement productElement) {
         super(DriverProvider.getDriver());
-        this.womenPageElements = new WomenPageElements(productElement);
-        this.filterPageElements = new FilterPageElements();
+        this.productItemElements = new ProductItemElements(productElement);
+        this.filterPageElements = new ShopByFilterElements();
     }
 
-    public WomenPage(WebDriver driver, WebDriverWait wait) {
+    public ProductItemPage(WebDriver driver, WebDriverWait wait) {
         super(driver);
         this.driver = driver;
         this.wait = wait;
     }
 
     public String getName() {
-        return womenPageElements.productName.getText();
+        return productItemElements.productName.getText();
     }
 
     public String getPrice() {
-        return womenPageElements.price.getText();
+        return productItemElements.price.getText();
     }
 
     public String getOldPrice() {
-        return womenPageElements.oldPrice.getText();
+        return productItemElements.oldPrice.getText();
     }
 
     public WebElement getImage() {
-        return womenPageElements.image;
+        return productItemElements.image;
     }
 
     public String getImageSrc() {
-        return womenPageElements.image.getAttribute("src");
+        return productItemElements.image.getAttribute("src");
     }
 
     public WebElement getHoverStyle() {
-        return womenPageElements.hoverStyle;
+        return productItemElements.hoverStyle;
     }
 
     public String getBorderOfSelectedColor() {
-        return womenPageElements.selectedColor.getCssValue("border-color");
+        return productItemElements.selectedColor.getCssValue("border-color");
     }
 
     public WebElement getOriginalPriceStyle(){
-        return womenPageElements.oldPrice;
+        return productItemElements.oldPrice;
     }
 
     public WebElement getFinalPrice() {
-        return womenPageElements.price;
+        return productItemElements.price;
     }
 
-    public WebElement getWishListButton() {return womenPageElements.addToWishlisLink;}
+    public WebElement getWishListButton() {return productItemElements.addToWishlisLink;}
 
     public boolean areShownMultiplePrices() {
         return !getOldPrice().isEmpty() && !getPrice().isEmpty();

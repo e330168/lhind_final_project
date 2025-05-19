@@ -1,9 +1,8 @@
 package core.pages.dashboard;
 
-import core.elements.dashboard.DashboardPageElements;
-import core.elements.menu.FilterPageElements;
+import core.elements.dashboard.ProductsElements;
+import core.elements.menu.ShopByFilterElements;
 import core.pages.menu.MainMenuPage;
-import core.pages.menu.WomenPage;
 import core.utils.BasePageObject;
 import core.utils.UIActions;
 import core.utils.WaitUtils;
@@ -21,38 +20,38 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class DashboardPage extends BasePageObject {
+public class ProductsGridPage extends BasePageObject {
     private  WebDriver driver;
     private  WebDriverWait wait;
-    private  DashboardPageElements dashboardPageElements;
-    private FilterPageElements filterPageElements;
+    private ProductsElements productsGridPageElements;
+    private ShopByFilterElements filterPageElements;
 
-    public DashboardPage(WebDriver driver, WebDriverWait wait) {
+    public ProductsGridPage(WebDriver driver, WebDriverWait wait) {
         super(driver);
         this.driver = driver;
         this.wait = wait;
-        this.dashboardPageElements = new DashboardPageElements();
-        this.filterPageElements = new FilterPageElements();
+        this.productsGridPageElements = new ProductsElements();
+        this.filterPageElements = new ShopByFilterElements();
     }
 
     public String getWelcomeMessageText() {
-        return dashboardPageElements.welcomeMessage.getText();
+        return productsGridPageElements.welcomeMessage.getText();
     }
 
     public String getSuccessRegisterMessage() {
-        return dashboardPageElements.registerSuccessMessage.getText();
+        return productsGridPageElements.registerSuccessMessage.getText();
     }
 
     public void goToWomenViewAll() {
         Actions actions = new Actions(driver);
-        actions.moveToElement(dashboardPageElements.womenMenu).perform();
-        wait.until(ExpectedConditions.elementToBeClickable(dashboardPageElements.womenSubMenu)).click();
+        actions.moveToElement(productsGridPageElements.womenMenu).perform();
+        wait.until(ExpectedConditions.elementToBeClickable(productsGridPageElements.womenSubMenu)).click();
     }
 
-    public List<WomenPage> getProductItems() {
-        List<WomenPage> items = new ArrayList<>();
-        for (WebElement product : dashboardPageElements.productItems) {
-            items.add(new WomenPage(product));
+    public List<ProductItemPage> getProductItems() {
+        List<ProductItemPage> items = new ArrayList<>();
+        for (WebElement product : productsGridPageElements.productItems) {
+            items.add(new ProductItemPage(product));
         }
 //        System.out.println("Total products: " + items.size());
 //        System.out.println("Product details: :");
@@ -72,8 +71,8 @@ public class DashboardPage extends BasePageObject {
 
     public void goToMenViewAll() {
         Actions actions = new Actions(driver);
-        actions.moveToElement(dashboardPageElements.menMenu).perform();
-        wait.until(ExpectedConditions.elementToBeClickable(dashboardPageElements.menSubMenu)).click();
+        actions.moveToElement(productsGridPageElements.menMenu).perform();
+        wait.until(ExpectedConditions.elementToBeClickable(productsGridPageElements.menSubMenu)).click();
     }
 
     public void selectColor() {
@@ -81,12 +80,12 @@ public class DashboardPage extends BasePageObject {
         UIActions.click(driver, filterPageElements.blackColor);
     }
 
-    public List<WomenPage> getProductItemsMen() {
+    public List<ProductItemPage> getProductItemsMen() {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class*='filter-match']")));
-        List<WebElement> elements = dashboardPageElements.productItems;
-        List<WomenPage> products = new ArrayList<>();
+        List<WebElement> elements = productsGridPageElements.productItems;
+        List<ProductItemPage> products = new ArrayList<>();
         for (WebElement el : elements) {
-            products.add(new WomenPage(el));
+            products.add(new ProductItemPage(el));
         }
         System.out.println("Total products: " + products.size());
         System.out.println("Product details: ");
@@ -114,10 +113,10 @@ public class DashboardPage extends BasePageObject {
         return Integer.parseInt(items);
     }
 
-    public List<WomenPage> getFreshProductItems() {
-        List<WomenPage> products = new ArrayList<>();
-        for (WebElement root : dashboardPageElements.productItems) {
-            products.add(new WomenPage(root));
+    public List<ProductItemPage> getFreshProductItems() {
+        List<ProductItemPage> products = new ArrayList<>();
+        for (WebElement root : productsGridPageElements.productItems) {
+            products.add(new ProductItemPage(root));
         }
         return products;
     }
@@ -137,8 +136,8 @@ public class DashboardPage extends BasePageObject {
             if (!parts[1].isEmpty()) max = Double.parseDouble(parts[1]);
         }
 
-        List<WomenPage> freshProducts = getFreshProductItems();
-        for (WomenPage product : freshProducts) {
+        List<ProductItemPage> freshProducts = getFreshProductItems();
+        for (ProductItemPage product : freshProducts) {
             String priceText = product.getPrice();
             double actualPrice = Double.parseDouble(priceText.replace("$", "").trim());
 
@@ -174,11 +173,11 @@ public class DashboardPage extends BasePageObject {
 
     public List<Double> getSortedProduct(){
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//select[@title='Sort By']")));
-        List<WebElement> elements = dashboardPageElements.productItems;
-        List<WomenPage> products = new ArrayList<>();
+        List<WebElement> elements = productsGridPageElements.productItems;
+        List<ProductItemPage> products = new ArrayList<>();
 
         for (WebElement el : elements) {
-            products.add(new WomenPage(el));
+            products.add(new ProductItemPage(el));
         }
 
         List<Double> prices = products.stream()
@@ -193,9 +192,9 @@ public class DashboardPage extends BasePageObject {
     }
 
     public void addToWishList(int productIndex) {
-        List<WomenPage> products = new ArrayList<>();
-        for (WebElement product : dashboardPageElements.productItems) {
-            products.add(new WomenPage(product));
+        List<ProductItemPage> products = new ArrayList<>();
+        for (WebElement product : productsGridPageElements.productItems) {
+            products.add(new ProductItemPage(product));
         }
         WebElement wishListButton = products.get(productIndex).getWishListButton();
 

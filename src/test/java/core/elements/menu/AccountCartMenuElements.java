@@ -5,16 +5,13 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class MainMenuElements {
-    public MainMenuElements() {
+public class AccountCartMenuElements {
+    public AccountCartMenuElements() {
         PageFactory.initElements(DriverProvider.getDriver(), this);
     }
 
     @FindBy(xpath = "//a[@data-target-element='#header-account']")
     public WebElement accountMenu;
-
-    @FindBy(xpath = "//div[@class='links']//li[1]//a")
-    public WebElement accountSubMenu;
 
     @FindBy(xpath = "//div[@class='links']//li[2]//a")
     public WebElement myWishListMenu;

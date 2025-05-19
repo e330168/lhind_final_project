@@ -1,9 +1,8 @@
 package core.tests;
 
-import core.elements.dashboard.DashboardPageElements;
 import core.pages.account.LogInPage;
 import core.pages.account.RegisterPage;
-import core.pages.dashboard.DashboardPage;
+import core.pages.dashboard.ProductsGridPage;
 import core.pages.menu.MainMenuPage;
 import core.utils.CredentialsUtils;
 import core.utils.TestBase;
@@ -32,13 +31,12 @@ public class AccountTests extends TestBase {
             driver.getCurrentUrl();
             Assert.assertTrue(driver.getCurrentUrl().contains("create"));
 
-            DashboardPage dashboardPage=new DashboardPage(driver, wait);
-            String successM=dashboardPage.getSuccessRegisterMessage();
+            ProductsGridPage ProductsGridPage=new ProductsGridPage(driver, wait);
+            String successM=ProductsGridPage.getSuccessRegisterMessage();
             assertTrue(register.getSuccessMessage().contains(successM));
             menu.logout();
         }
     }
-
 
     @Test
     public void logIn() {
@@ -48,7 +46,7 @@ public class AccountTests extends TestBase {
         LogInPage loginPage = new LogInPage(driver,wait);
         loginPage.logIn();
 
-        DashboardPage dashboard = new DashboardPage(driver,wait);
+        ProductsGridPage dashboard = new ProductsGridPage(driver,wait);
         String actualWelcome = dashboard.getWelcomeMessageText();
         System.out.println(actualWelcome);
 
