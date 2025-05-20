@@ -5,17 +5,24 @@ import core.pages.dashboard.ProductsGridPage;
 import core.pages.menu.MainMenuPage;
 import core.pages.dashboard.SalePage;
 import core.pages.dashboard.ProductItemPage;
-import core.pages.wishList.WishListPage;
+import core.utils.ScreenshotUtils.ScreenshotListener;
 import core.utils.TestBase;
 import core.utils.UIActions;
 import org.testng.Assert;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import java.util.List;
 
 import static org.testng.Assert.assertEquals;
 
+@Listeners(ScreenshotListener.class)
 public class Tests extends TestBase {
+
+    @Test
+    public void testSC() {
+        Assert.fail("Forcing failure to test screenshot");
+    }
 
     @Test
     public void testProductList() {

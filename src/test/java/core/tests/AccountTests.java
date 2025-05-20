@@ -5,14 +5,16 @@ import core.pages.account.RegisterPage;
 import core.pages.dashboard.ProductsGridPage;
 import core.pages.menu.MainMenuPage;
 import core.utils.CredentialsUtils;
+import core.utils.ScreenshotUtils.ScreenshotListener;
 import core.utils.TestBase;
 
 import org.testng.Assert;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertTrue;
 
-
+@Listeners(ScreenshotListener.class)
 public class AccountTests extends TestBase {
 
     @Test
