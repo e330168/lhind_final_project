@@ -1,6 +1,6 @@
 package core.pages.menu;
 
-import core.elements.navigation.AccountCartMenuElements;
+import core.elements.navigation.AccountMenuElements;
 import core.utils.UIActions;
 import core.utils.WaitUtils;
 import org.openqa.selenium.WebDriver;
@@ -11,13 +11,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class MainMenuPage {
     private WebDriver driver;
     private WebDriverWait wait;
-    private AccountCartMenuElements mainMenuElements;
+    private AccountMenuElements mainMenuElements;
 
     public MainMenuPage(WebDriver driver, WebDriverWait wait) {
         this.driver = driver;
         this.wait = wait;
         PageFactory.initElements(driver, this);
-        mainMenuElements = new AccountCartMenuElements();
+        mainMenuElements = new AccountMenuElements();
     }
 
     public void goToRegister() {
@@ -50,23 +50,23 @@ public class MainMenuPage {
     }
 
     public WebElement wishList(){
-        return mainMenuElements.myWishListMenu;
+        return mainMenuElements.myWishListSubMenu;
     }
 
     public void goToShoppingCart() {
         WaitUtils.waitForVisible(driver, mainMenuElements.accountMenu);
         UIActions.click(driver, mainMenuElements.accountMenu);
 
-        WaitUtils.waitForVisible(driver, mainMenuElements.cartMenu);
-        UIActions.click(driver, mainMenuElements.cartMenu);
+        WaitUtils.waitForVisible(driver, mainMenuElements.cartSubMenu);
+        UIActions.click(driver, mainMenuElements.cartSubMenu);
     }
 
     public void goToMyWishList() {
         WaitUtils.waitForVisible(driver, mainMenuElements.accountMenu);
         UIActions.click(driver, mainMenuElements.accountMenu);
 
-        WaitUtils.waitForVisible(driver, mainMenuElements.myWishListMenu);
-        UIActions.click(driver, mainMenuElements.myWishListMenu);
+        WaitUtils.waitForVisible(driver, mainMenuElements.myWishListSubMenu);
+        UIActions.click(driver, mainMenuElements.myWishListSubMenu);
     }
 
 }

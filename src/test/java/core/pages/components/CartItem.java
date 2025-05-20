@@ -17,15 +17,11 @@ public class CartItem {
     }
 
     public String getName() {
-        return elements.productItemElements.productName.getText();
+        return elements.ProductElements.productName.getText();
     }
 
     public WebElement quantityInput() {
         return elements.quantityInput;
-    }
-
-    public WebElement getGrandPrice() {
-        return elements.grandPrice;
     }
 
     public void setQuantity(int quantity) {
@@ -48,26 +44,3 @@ public class CartItem {
         return elements.deleteBin;
     }
 }
-
-//
-//    public WebElement addToCartBF() {
-//        return elements.addToCartButton;
-//    }
-//
-//    public double getGrandTotal() {
-//        String totalText = elements.price.getText();
-//        return parsePrice(totalText);
-//    }
-//
-//    public WebElement getPrice() {
-//        return elements.price;
-//    }
-//    public WebElement getColor() {
-//        return elements.selectColor;
-//    }
-//
-//    public List<WebElement> getSizeP() {
-//        return elements.selectSize;
-//    }
-
-//}

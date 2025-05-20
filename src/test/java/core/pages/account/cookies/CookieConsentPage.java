@@ -21,17 +21,11 @@ public class CookieConsentPage {
                 cookieButton.click();
                 WebElement optIn = wait.until(ExpectedConditions.elementToBeClickable(optInRadio));
                 optIn.click();
-
                 WebElement submit = wait.until(ExpectedConditions.elementToBeClickable(submitButton));
                 submit.click();
-
                 wait.until(ExpectedConditions.invisibilityOfElementLocated(prompt));
             }
         } catch (TimeoutException e) {
         }
     }
 }
-
-
-
-

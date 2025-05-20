@@ -21,45 +21,52 @@ public class RegisterPage extends RegisterElements {
                 .click();
     }
 
-    public void setFirstName(String firstName){
-        basePageObject
-                .getWaitUtils()
-                .waitForElementVisible(RegisterElements.firstName)
-                .sendKeys(firstName);
+    public void setField(String fieldName, String value) {
+        switch (fieldName.toLowerCase()) {
+            case "firstname":
+                basePageObject
+                        .getWaitUtils()
+                        .waitForElementVisible(RegisterElements.firstName)
+                        .sendKeys(value);
+                break;
+
+            case "middlename":
+                basePageObject
+                        .getWaitUtils()
+                        .waitForElementVisible(RegisterElements.middleName)
+                        .sendKeys(value);
+                break;
+
+            case "lastname":
+                basePageObject
+                        .getWebElementUtils()
+                        .sendKeysToElementWithWait(RegisterElements.lastName, value, 2);
+                break;
+
+            case "email":
+                basePageObject
+                        .getWaitUtils()
+                        .waitForElementVisible(RegisterElements.emailAddress)
+                        .sendKeys(value);
+                break;
+
+            case "password":
+                basePageObject
+                        .getWebElementUtils()
+                        .sendKeysToElementWithWait(RegisterElements.password, value, 2);
+                break;
+
+            case "confirmpassword":
+                basePageObject
+                        .getWebElementUtils()
+                        .sendKeysToElementWithWait(RegisterElements.confirmP, value, 2);
+                break;
+
+            default:
+                throw new IllegalArgumentException("Unknown field name: " + fieldName);
+        }
     }
 
-    public void setMiddleName(String middleName){
-        basePageObject
-                .getWaitUtils()
-                .waitForElementVisible(RegisterElements.middleName)
-                .sendKeys(middleName);
-    }
-
-    public void setLastName(String lastName) {
-        basePageObject
-                .getWebElementUtils()
-                .sendKeysToElementWithWait(RegisterElements.lastName, lastName, 2);
-    }
-
-    public void setEmail(String email){
-        basePageObject
-                .getWaitUtils()
-                .waitForElementVisible(RegisterElements.emailAddress)
-                .sendKeys(email);
-    }
-
-    public void setPassword(String password){
-        basePageObject
-                .getWebElementUtils()
-                .sendKeysToElementWithWait(RegisterElements.password,password,2);
-
-    }
-
-    public void setConfirmPassword(String confirmPassword){
-        basePageObject
-                .getWebElementUtils()
-                .sendKeysToElementWithWait(RegisterElements.confirmP,confirmPassword,2);
-    }
 
     public void checkboxRM() {
         if (!WebElementUtils.isElementDisplayed(RegisterElements.checkbox)) return;
@@ -72,12 +79,12 @@ public class RegisterPage extends RegisterElements {
     }
 
     public void fillForm(String first, String middle, String last, String email, String pass, String confirmPassword) {
-        setFirstName(first);
-        setMiddleName(middle);
-        setLastName(last);
-        setEmail(email);
-        setPassword(pass);
-        setConfirmPassword(confirmPassword);
+        setField("firstname", first);
+        setField("middlename", middle);
+        setField("lastname", last);
+        setField("email", email);
+        setField("password", pass);
+        setField("confirmpassword", confirmPassword);
         checkboxRM();
 
         clickRegisterButton();

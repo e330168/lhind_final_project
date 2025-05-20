@@ -1,6 +1,5 @@
 package core.utils;
 
-
 import java.io.*;
 import java.util.Properties;
 
@@ -16,9 +15,10 @@ public class CredentialsUtils {
         try (InputStream input = new FileInputStream(FILE_PATH)) {
             props.load(input);
         } catch (IOException e) {
-            System.out.println("No credentials file found. Starting fresh.");
+            System.out.println("No credentials file found.");
         }
     }
+
     public static void saveCredential(String key, String value) {
         props.setProperty(key, value);
         try (OutputStream output = new FileOutputStream(FILE_PATH)) {

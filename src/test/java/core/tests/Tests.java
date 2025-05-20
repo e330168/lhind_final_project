@@ -5,9 +5,11 @@ import core.pages.dashboard.ProductsGridPage;
 import core.pages.menu.MainMenuPage;
 import core.pages.dashboard.SalePage;
 import core.pages.dashboard.ProductItemPage;
+import core.pages.wishList.WishListPage;
 import core.utils.ScreenshotUtils.ScreenshotListener;
 import core.utils.TestBase;
 import core.utils.UIActions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -18,11 +20,6 @@ import static org.testng.Assert.assertEquals;
 
 @Listeners(ScreenshotListener.class)
 public class Tests extends TestBase {
-
-    @Test
-    public void testSC() {
-        Assert.fail("Forcing failure to test screenshot");
-    }
 
     @Test
     public void testProductList() {
@@ -149,22 +146,21 @@ public class Tests extends TestBase {
 
 
     //T7
-//    @Test(dependsOnMethods = {"checkSortedByPriceAnd2WishListSelected"})
-    @Test
+//    @Test
+    @Test(dependsOnMethods = {"checkSortedByPriceAnd2WishListSelected"})
     public void shoppingCart() {
-//        WishListPage wishListPage = new WishListPage(driver, wait);
+        WishListPage wishListPage = new WishListPage(driver, wait);
         MainMenuPage mainMenuPage = new MainMenuPage(driver, wait);
-//
-//        mainMenuPage.goToMyWishList();
-//        wishListPage.addToCart();
-//
         CartPage cartPage = new CartPage(driver, wait);
-        mainMenuPage.goToShoppingCart();
+
+        mainMenuPage.goToMyWishList();
+        wishListPage.addToCart();
         double updatedQ = cartPage.verifyCartTotalAfterQuantityUpdate();
         assertEquals(updatedQ, 2, "Quantity is not updated to 2.");
 
-        double actualTotal = cartPage.checkTheGrandPrice();
+        double actualTotal = cartPage.subTotalSum();
         double expectedTotal = cartPage.getGrandTotal();
+
         System.out.println("Subtotal Sum: $" + expectedTotal);
         System.out.println("Grand Total:  $" + actualTotal);
 
@@ -173,21 +169,25 @@ public class Tests extends TestBase {
 
 
     //T8
-//    @Test(dependsOnMethods = {"shoppingCart"})
     @Test
-    public void emptyShoppingCart(){
+//    @Test(dependsOnMethods = {"shoppingCart","checkSortedByPriceAnd2WishListSelected"})
+    public void testDeleteAllItemsFromCart() {
         CartPage cartPage = new CartPage(driver, wait);
         MainMenuPage mainMenuPage = new MainMenuPage(driver, wait);
         mainMenuPage.goToShoppingCart();
 
         cartPage.getCartItems();
-        System.out.println(cartPage.getCartItems().size());
-        int finalCount = cartPage.deleteAllItemsFromCart();
+        int initialCount = cartPage.getCartItemsCount();
 
-        assertEquals(finalCount, 0, "Cart should be empty after deleting all items.");
+        for (int i = initialCount; i > 0; i--) {
+            int beforeCount = cartPage.getCartItemsCount();
+            cartPage.deleteFirstItemFromCart();
+            int afterCount = cartPage.getCartItemsCount();
+
+            assertEquals(afterCount, beforeCount - 1, "Cart product count should decrease by 1 after being deleted.");
+        }
         assertEquals(cartPage.isCartEmptyMessageDisplayed(), true);
-
-//        boolean isDeleted=cartPage.removeFirstProductFromCart();
-//        Assert.assertTrue(isDeleted, "First cart item should be deleted successfully.");
+        assertEquals(cartPage.getCartItemsCount(), 0, "Cart should be empty after deleting all products.");
     }
+
 }

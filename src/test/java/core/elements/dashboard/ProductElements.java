@@ -6,8 +6,8 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.DefaultElementLocatorFactory;
 
 
-public class ProductItemElements {
-    public ProductItemElements(WebElement productRoot) {
+public class ProductElements {
+    public ProductElements(WebElement productRoot) {
         PageFactory.initElements(new DefaultElementLocatorFactory(productRoot), this);
     }
 
@@ -20,19 +20,12 @@ public class ProductItemElements {
     @FindBy(css = "[id*='product-p']")
     public WebElement price;
 
-    //    .price-box .old-price .price {
-    //        color: #a0a0a0;
-    //        text-decoration: line-through;
-    //    }
     @FindBy(css="[id*='old']")
     public WebElement oldPrice;
 
     @FindBy(css = ".product-image")
     public WebElement hoverStyle;
 
-//    .configurable-swatch-list .selected .swatch-link,.swatch-link:hover {
-//        border-color: #3399cc;
-//    }
     @FindBy(xpath = "//a[contains(@name, 'black')]")
     public WebElement selectedColor;
 

@@ -1,6 +1,6 @@
 package core.pages.cart;
 
-import core.elements.cart.CartElements;
+import core.elements.navigation.AccountMenuElements;
 import core.pages.components.CartItem;
 import core.utils.BasePageObject;
 import org.openqa.selenium.*;
@@ -13,11 +13,13 @@ import java.util.List;
 public class CartPage extends BasePageObject {
     private WebDriver driver;
     private WebDriverWait wait;
+    private AccountMenuElements accountMenu;
 
     public CartPage(WebDriver driver, WebDriverWait wait) {
         super(driver);
         this.driver = driver;
         this.wait = wait;
+        this.accountMenu=new AccountMenuElements();
     }
 
     public List<CartItem> getCartItems() {
@@ -27,6 +29,10 @@ public class CartPage extends BasePageObject {
             items.add(new CartItem(container));
         }
         return items;
+    }
+
+    public int getCartItemsCount() {
+        return getCartItems().size();
     }
 
     public double getGrandTotal() {
@@ -43,9 +49,7 @@ public class CartPage extends BasePageObject {
     public double verifyCartTotalAfterQuantityUpdate() {
         CartPage cartItem = new CartPage(driver, wait);
         List<CartItem> items = cartItem.getCartItems();
-        String valueQ=" ";
-//        wait.until(ExpectedConditions.urlContains("cart"));
-//        WebElement qtyInput = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(".//input[@class='input-text qty']")));
+        String valueQuantity=" ";
         if (!items.isEmpty()) {
             CartItem firstItem = items.get(0);
             System.out.println("First Item: " + firstItem);
@@ -58,67 +62,40 @@ public class CartPage extends BasePageObject {
             CartItem updatedFirstItem = updatedItems.get(0);
 
             wait.until(ExpectedConditions.textToBePresentInElementValue(updatedFirstItem.quantityInput(), "2"));
-            valueQ = updatedFirstItem.quantityInput().getAttribute("value");
-            System.out.println("Updated Quantity Input :" + valueQ);
+            valueQuantity = updatedFirstItem.quantityInput().getAttribute("value");
+            System.out.println("Updated Quantity Input :" + valueQuantity);
 
         }
-        return Double.parseDouble(valueQ);
+        return Double.parseDouble(valueQuantity);
     }
 
-    public double checkTheGrandPrice () {
+    public double subTotalSum () {
             List<CartItem> items = getCartItems();
             double sum = 0.0;
             for (CartItem item : items) {
-                System.out.println("Amount item: " + item.getSubtotalPrice());
+                System.out.println("Product price: " + item.getSubtotalPrice());
                 sum += item.getSubtotalPrice();
             }
-            System.out.println("Amount of subTotal prices: " + sum);
+            System.out.println("Sum of subTotal prices: " + sum);
             return sum;
+    }
+
+    public void deleteFirstItemFromCart() {
+        List<CartItem> cartItems = getCartItems();
+        if (cartItems.isEmpty()) {
+            System.out.println("Cart is already empty.");
+            return;
         }
+        CartItem firstItem = cartItems.get(0);
+        WebElement staleElement = firstItem.getRowRoot();
 
-    public int deleteAllItemsFromCart() {
-        By itemRowsLocator = By.xpath("//table[@id='shopping-cart-table']//tbody//tr");
-
-        List<WebElement> rows = driver.findElements(itemRowsLocator);
-        int previousCount = rows.size();
-
-        while (previousCount > 0) {
-            List<CartItem> items = getCartItems();
-            CartItem firstItem = items.get(0);
-            firstItem.clickDelete().click();
-
-            int finalPreviousCount = previousCount;
-            wait.until(driver -> {
-                List<WebElement> updatedRows = driver.findElements(itemRowsLocator);
-                return updatedRows.size() < finalPreviousCount;
-            });
-            previousCount--;
-            System.out.println("Item removed. Remaining: " + previousCount);
-        }
-
-        System.out.println("Cart is now empty.");
-        return previousCount;
+        firstItem.clickDelete().click();
+        wait.until(ExpectedConditions.stalenessOf(staleElement));
     }
 
     public boolean isCartEmptyMessageDisplayed() {
         WebElement emptyMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='cart-empty']//p")));
         return emptyMessage.getText().contains("You have no items in your shopping cart.");
-    }
-
-    public boolean removeFirstProductFromCart() {
-        List<CartItem> itemsBefore = getCartItems();
-        int countBefore = itemsBefore.size();
-
-        if (countBefore == 0) {
-            System.out.println(" Cart is already empty.");
-            return false;
-        }
-        CartItem firstItem = itemsBefore.get(0);
-        firstItem.clickDelete().click();
-        wait.until(ExpectedConditions.stalenessOf(firstItem.getRowRoot()));
-        int countAfter = itemsBefore.size();
-
-        return countAfter == countBefore - 1;
     }
 }
 

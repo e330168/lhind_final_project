@@ -108,7 +108,6 @@ public class ProductsGridPage extends BasePageObject {
         UIActions.click(driver, filterPageElements.priceFilter09);
     }
 
-
     public int priceFilterCount(){
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//div[@class='count-container'])[1]//strong")));
         String items = filterPageElements.getSizeDisplayed.getText().split(" ")[0];

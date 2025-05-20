@@ -22,15 +22,15 @@ public class WishListItem {
     }
 
     public String getProductName() {
-        return elements.productItemElements.productName.getText();
+        return elements.ProductElements.productName.getText();
     }
 
     public String getPrice() {
-        return elements.productItemElements.price.getText();
+        return elements.ProductElements.price.getText();
     }
 
     public WebElement getImage() {
-        return elements.productItemElements.image;
+        return elements.ProductElements.image;
     }
 
 }

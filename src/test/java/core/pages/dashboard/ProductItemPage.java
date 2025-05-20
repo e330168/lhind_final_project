@@ -1,6 +1,6 @@
 package core.pages.dashboard;
 
-import core.elements.dashboard.ProductItemElements;
+import core.elements.dashboard.ProductElements;
 import core.elements.navigation.ShopByFilterElements;
 import core.utils.BasePageObject;
 import core.utils.DriverProvider;
@@ -9,14 +9,14 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class ProductItemPage extends BasePageObject {
-    private ProductItemElements productItemElements;
+    private ProductElements ProductElements;
     private ShopByFilterElements filterPageElements;
     private WebDriver driver;
     private WebDriverWait wait;
 
     public ProductItemPage(WebElement productElement) {
         super(DriverProvider.getDriver());
-        this.productItemElements = new ProductItemElements(productElement);
+        this.ProductElements = new ProductElements(productElement);
         this.filterPageElements = new ShopByFilterElements();
     }
 
@@ -27,42 +27,42 @@ public class ProductItemPage extends BasePageObject {
     }
 
     public String getName() {
-        return productItemElements.productName.getText();
+        return ProductElements.productName.getText();
     }
 
     public String getPrice() {
-        return productItemElements.price.getText();
+        return ProductElements.price.getText();
     }
 
     public String getOldPrice() {
-        return productItemElements.oldPrice.getText();
+        return ProductElements.oldPrice.getText();
     }
 
     public WebElement getImage() {
-        return productItemElements.image;
+        return ProductElements.image;
     }
 
     public String getImageSrc() {
-        return productItemElements.image.getAttribute("src");
+        return ProductElements.image.getAttribute("src");
     }
 
     public WebElement getHoverStyle() {
-        return productItemElements.hoverStyle;
+        return ProductElements.hoverStyle;
     }
 
     public String getBorderOfSelectedColor() {
-        return productItemElements.selectedColor.getCssValue("border-color");
+        return ProductElements.selectedColor.getCssValue("border-color");
     }
 
     public WebElement getOriginalPriceStyle(){
-        return productItemElements.oldPrice;
+        return ProductElements.oldPrice;
     }
 
     public WebElement getFinalPrice() {
-        return productItemElements.price;
+        return ProductElements.price;
     }
 
-    public WebElement getWishListButton() {return productItemElements.addToWishListLink;}
+    public WebElement getWishListButton() {return ProductElements.addToWishListLink;}
 
     public boolean areShownMultiplePrices() {
         return !getOldPrice().isEmpty() && !getPrice().isEmpty();

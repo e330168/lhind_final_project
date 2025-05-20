@@ -1,9 +1,9 @@
 package core.pages.wishList;
 
-import core.elements.navigation.AccountCartMenuElements;
+import core.elements.navigation.AccountMenuElements;
+import core.pages.components.CartItem;
 import core.pages.components.WishListItem;
 import core.pages.menu.MainMenuPage;
-import core.pages.components.CartItem;
 import core.utils.BasePageObject;
 import core.utils.UIActions;
 import core.utils.WaitUtils;
@@ -17,15 +17,14 @@ import java.util.stream.Collectors;
 public class WishListPage extends BasePageObject {
         private  WebDriver driver;
         private  WebDriverWait wait;
-        private  AccountCartMenuElements mainMenu;
-        private core.pages.components.CartItem CartItem;
+        private  AccountMenuElements mainMenu;
         private MainMenuPage mainMenuPage;
 
     public WishListPage(WebDriver driver, WebDriverWait wait) {
         super(driver);
         this.driver = driver;
         this.wait = wait;
-        this.mainMenu = new AccountCartMenuElements();
+        this.mainMenu = new AccountMenuElements();
         this.mainMenuPage = new MainMenuPage(driver, wait);
     }
 
@@ -46,40 +45,38 @@ public class WishListPage extends BasePageObject {
     }
 
     public void addToCart() {
-        int itemIndex = 0;
+        WishListPage wishListPage = new WishListPage(driver, wait);
+        ProductConfigPage productConfigPage = new ProductConfigPage(driver);
 
-        while (true) {
-            try {
-                WishListPage wishListPage = new WishListPage(driver, wait);
-                ProductConfigPage productConfigPage = new ProductConfigPage(driver);
+        int totalItems = wishListPage.getItems().size();
 
-                List<WishListItem> freshItems = wishListPage.getItems();
+        for (int i = 0; i < totalItems; i++) {
+            List<WishListItem> currentItems = wishListPage.getItems();
 
-                if (freshItems.isEmpty()) {
-                    System.out.println("Wishlist is empty. Finished processing all items.");
-                    break;
-                }
-                if (itemIndex >= freshItems.size()) {
-                    itemIndex = 0;
-                }
-                wishListPage.clickAddToCartForItem(itemIndex);
-                wait.until(ExpectedConditions.urlContains("configure"));
+            if (currentItems.isEmpty()) {
+                System.out.println("Wishlist is empty.");
+                break;
+            }
 
-                productConfigPage.selectColor();
-                productConfigPage.selectSize();
+            wishListPage.clickAddToCartForItem(0);
+            wait.until(ExpectedConditions.urlContains("configure"));
 
-                productConfigPage.addToCart();
-                if (itemIndex ==0) {
-                    wait.until(ExpectedConditions.urlContains("/checkout/cart/"));
-                }
-                System.out.println("Item added to cart.");
+            productConfigPage.selectColor();
+            productConfigPage.selectSize();
+            productConfigPage.addToCart();
 
-            } catch (StaleElementReferenceException e) {
-                System.out.println("Stale element. Reloading wishlist.");
-            } catch (Exception e) {
-                System.out.println("Error: " + e.getMessage());
+            wait.until(ExpectedConditions.urlContains("/checkout/cart"));
+
+            if (i < totalItems - 1) {
+                driver.navigate().back();
+                wait.until(ExpectedConditions.urlContains("/wishlist"));
+            } else {
+                driver.navigate().forward();
+                System.out.println("All items processed. Staying on cart page.");
             }
         }
     }
+
+
 
 }

@@ -5,10 +5,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import java.util.List;
-
-public class AccountCartMenuElements {
-    public AccountCartMenuElements() {
+public class AccountMenuElements {
+    public AccountMenuElements() {
         PageFactory.initElements(DriverProvider.getDriver(), this);
     }
 
@@ -16,10 +14,10 @@ public class AccountCartMenuElements {
     public WebElement accountMenu;
 
     @FindBy(xpath = "//div[@class='links']//li[2]//a")
-    public WebElement myWishListMenu;
+    public WebElement myWishListSubMenu;
 
     @FindBy(xpath = "//div[@class='links']//li[3]//a")
-    public WebElement cartMenu;
+    public WebElement cartSubMenu;
 
     @FindBy(xpath = "//a[@title='Register']")
     public WebElement registerSubMenu;
@@ -29,9 +27,6 @@ public class AccountCartMenuElements {
 
     @FindBy(linkText = "Log Out")
     public WebElement logOutSubMenu;
-
-    @FindBy(xpath ="//table[@id='shopping-cart-table']//tbody//tr")
-    public List<WebElement> productsOnCart;
 
     @FindBy(xpath="//span[@class='count']")
     public WebElement nrOfCartProd;

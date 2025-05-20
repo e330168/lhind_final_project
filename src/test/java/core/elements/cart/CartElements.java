@@ -1,22 +1,19 @@
 package core.elements.cart;
 
-import core.elements.dashboard.ProductItemElements;
-import core.utils.DriverProvider;
+import core.elements.dashboard.ProductElements;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.DefaultElementLocatorFactory;
 
-import java.util.List;
-
 public class CartElements{
 
     public CartElements(WebElement root) {
         PageFactory.initElements(new DefaultElementLocatorFactory(root), this);
-        this.productItemElements = new ProductItemElements(root);
+        this.ProductElements = new ProductElements(root);
     }
 
-    public ProductItemElements productItemElements;
+    public ProductElements ProductElements;
 
     @FindBy(xpath="//td[@class='product-cart-actions']//button")
     public WebElement updateQuantity;
@@ -30,6 +27,4 @@ public class CartElements{
     @FindBy(xpath=".//td[@class='a-center product-cart-remove last']//a")
     public WebElement deleteBin;
 
-    @FindBy(xpath=".//tfoot//span[@class='price']")
-    public WebElement grandPrice;
 }

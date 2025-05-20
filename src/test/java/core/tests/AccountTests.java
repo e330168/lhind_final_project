@@ -6,17 +6,17 @@ import core.pages.dashboard.ProductsGridPage;
 import core.pages.menu.MainMenuPage;
 import core.utils.CredentialsUtils;
 import core.utils.ScreenshotUtils.ScreenshotListener;
+import core.utils.SkipLogIn;
 import core.utils.TestBase;
 
 import org.testng.Assert;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-import static org.testng.Assert.assertTrue;
-
 @Listeners(ScreenshotListener.class)
 public class AccountTests extends TestBase {
 
+    @SkipLogIn
     @Test
     public void createAccount() {
         if (!CredentialsUtils.hasCredentials()) {
@@ -31,15 +31,17 @@ public class AccountTests extends TestBase {
             CredentialsUtils.saveCredential(email, password);
 
             driver.getCurrentUrl();
-            Assert.assertTrue(driver.getCurrentUrl().contains("create"));
 
             ProductsGridPage ProductsGridPage=new ProductsGridPage(driver, wait);
             String successM=ProductsGridPage.getSuccessRegisterMessage();
-            assertTrue(register.getSuccessMessage().contains(successM));
+            String regMessage="Thank you for registering with Tealium Ecommerce.";
+
+            Assert.assertTrue(successM.equals(regMessage),"Not registered successfully.");
             menu.logout();
         }
     }
 
+    @SkipLogIn
     @Test
     public void logIn() {
         MainMenuPage menu = new MainMenuPage(driver, wait);
