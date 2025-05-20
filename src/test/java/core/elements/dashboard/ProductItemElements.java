@@ -36,9 +36,7 @@ public class ProductItemElements {
     @FindBy(xpath = "//a[contains(@name, 'black')]")
     public WebElement selectedColor;
 
-//    @FindBy(xpath = "//a[contains(@data-url, 'wish')]")
-//    @FindBy(xpath = "//ul[@class='add-to-links']//li[1]//a")
     @FindBy(css=".link-wishlist")
-    public WebElement addToWishlisLink;
+    public WebElement addToWishListLink;
 
 }

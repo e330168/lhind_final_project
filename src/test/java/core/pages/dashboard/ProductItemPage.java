@@ -1,7 +1,7 @@
 package core.pages.dashboard;
 
 import core.elements.dashboard.ProductItemElements;
-import core.elements.menu.ShopByFilterElements;
+import core.elements.navigation.ShopByFilterElements;
 import core.utils.BasePageObject;
 import core.utils.DriverProvider;
 import org.openqa.selenium.WebDriver;
@@ -62,7 +62,7 @@ public class ProductItemPage extends BasePageObject {
         return productItemElements.price;
     }
 
-    public WebElement getWishListButton() {return productItemElements.addToWishlisLink;}
+    public WebElement getWishListButton() {return productItemElements.addToWishListLink;}
 
     public boolean areShownMultiplePrices() {
         return !getOldPrice().isEmpty() && !getPrice().isEmpty();

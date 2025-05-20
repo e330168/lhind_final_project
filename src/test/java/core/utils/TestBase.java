@@ -6,6 +6,7 @@ import core.pages.account.cookies.CookieConsentPage;
 import core.pages.menu.MainMenuPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -13,6 +14,8 @@ import org.testng.annotations.Test;
 
 import java.lang.reflect.Method;
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
 
 public class TestBase {
     protected WebDriver driver;
@@ -45,9 +48,24 @@ public class TestBase {
         loginPage.logIn();
     }
 
+//    @AfterMethod
+//    public void tearDown(ITestResult result, ITestContext context) {
+//        String currentMethod = result.getMethod().getMethodName();
+//
+//        boolean hasDependentScheduled = Arrays.stream(context.getAllTestMethods())
+//                .anyMatch(m -> Arrays.asList(m.getMethodsDependedUpon()).contains(currentMethod));
+//
+//        if (!hasDependentScheduled && driver != null) {
+//            driver.quit();
+//            driver = null;
+//        }
+//    }
+
+
     @AfterMethod
     public void tearDown(ITestResult result) {
-        if (result.getMethod().getMethodName().equals("checkSortedByPriceAnd2WishListSelected") &&
+        if ((result.getMethod().getMethodName().equals("checkSortedByPriceAnd2WishListSelected") ||
+                (result.getMethod().getMethodName().equals("shoppingCart"))) &&
                 result.getStatus() == ITestResult.SUCCESS) {
             return;
         }

@@ -1,4 +1,4 @@
-package core.elements.menu;
+package core.elements.navigation;
 
 import core.utils.DriverProvider;
 import org.openqa.selenium.WebElement;

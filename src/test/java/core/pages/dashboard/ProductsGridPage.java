@@ -1,7 +1,8 @@
 package core.pages.dashboard;
 
-import core.elements.dashboard.ProductsElements;
-import core.elements.menu.ShopByFilterElements;
+import core.elements.dashboard.DashboardElements;
+import core.elements.navigation.NavBarElements;
+import core.elements.navigation.ShopByFilterElements;
 import core.pages.menu.MainMenuPage;
 import core.utils.BasePageObject;
 import core.utils.UIActions;
@@ -14,7 +15,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,34 +23,36 @@ import java.util.stream.Collectors;
 public class ProductsGridPage extends BasePageObject {
     private  WebDriver driver;
     private  WebDriverWait wait;
-    private ProductsElements productsGridPageElements;
+    private NavBarElements navBar;
     private ShopByFilterElements filterPageElements;
+    private DashboardElements dashboard;
 
     public ProductsGridPage(WebDriver driver, WebDriverWait wait) {
         super(driver);
         this.driver = driver;
         this.wait = wait;
-        this.productsGridPageElements = new ProductsElements();
+        this.navBar = new NavBarElements();
         this.filterPageElements = new ShopByFilterElements();
+        this.dashboard = new DashboardElements();
     }
 
     public String getWelcomeMessageText() {
-        return productsGridPageElements.welcomeMessage.getText();
+        return dashboard.welcomeMessage.getText();
     }
 
     public String getSuccessRegisterMessage() {
-        return productsGridPageElements.registerSuccessMessage.getText();
+        return dashboard.registerSuccessMessage.getText();
     }
 
     public void goToWomenViewAll() {
         Actions actions = new Actions(driver);
-        actions.moveToElement(productsGridPageElements.womenMenu).perform();
-        wait.until(ExpectedConditions.elementToBeClickable(productsGridPageElements.womenSubMenu)).click();
+        actions.moveToElement(navBar.womenMenu).perform();
+        wait.until(ExpectedConditions.elementToBeClickable(navBar.womenSubMenu)).click();
     }
 
     public List<ProductItemPage> getProductItems() {
         List<ProductItemPage> items = new ArrayList<>();
-        for (WebElement product : productsGridPageElements.productItems) {
+        for (WebElement product : dashboard.productItems) {
             items.add(new ProductItemPage(product));
         }
 //        System.out.println("Total products: " + items.size());
@@ -71,8 +73,8 @@ public class ProductsGridPage extends BasePageObject {
 
     public void goToMenViewAll() {
         Actions actions = new Actions(driver);
-        actions.moveToElement(productsGridPageElements.menMenu).perform();
-        wait.until(ExpectedConditions.elementToBeClickable(productsGridPageElements.menSubMenu)).click();
+        actions.moveToElement(navBar.menMenu).perform();
+        wait.until(ExpectedConditions.elementToBeClickable(navBar.menSubMenu)).click();
     }
 
     public void selectColor() {
@@ -82,7 +84,7 @@ public class ProductsGridPage extends BasePageObject {
 
     public List<ProductItemPage> getProductItemsMen() {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class*='filter-match']")));
-        List<WebElement> elements = productsGridPageElements.productItems;
+        List<WebElement> elements = dashboard.productItems;
         List<ProductItemPage> products = new ArrayList<>();
         for (WebElement el : elements) {
             products.add(new ProductItemPage(el));
@@ -115,7 +117,7 @@ public class ProductsGridPage extends BasePageObject {
 
     public List<ProductItemPage> getFreshProductItems() {
         List<ProductItemPage> products = new ArrayList<>();
-        for (WebElement root : productsGridPageElements.productItems) {
+        for (WebElement root : dashboard.productItems) {
             products.add(new ProductItemPage(root));
         }
         return products;
@@ -205,7 +207,7 @@ public class ProductsGridPage extends BasePageObject {
 
     public void addToWishList(int productIndex) {
         List<ProductItemPage> products = new ArrayList<>();
-        for (WebElement product : productsGridPageElements.productItems) {
+        for (WebElement product : dashboard.productItems) {
             products.add(new ProductItemPage(product));
         }
         WebElement wishListButton = products.get(productIndex).getWishListButton();

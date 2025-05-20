@@ -1,10 +1,8 @@
-package core.pages.wishlist_cart;
+package core.pages.cart;
 
 import core.elements.cart.CartElements;
-import core.elements.cart.WishListItem;
+import core.pages.components.CartItem;
 import core.utils.BasePageObject;
-import core.utils.UIActions;
-import core.utils.WaitUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -13,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CartPage extends BasePageObject {
-    private CartElements cartPageElements;
     private WebDriver driver;
     private WebDriverWait wait;
 
@@ -21,21 +18,20 @@ public class CartPage extends BasePageObject {
         super(driver);
         this.driver = driver;
         this.wait = wait;
-        cartPageElements=new CartElements();
     }
 
-    public List<WishListItem> getCartItems() {
+    public List<CartItem> getCartItems() {
         List<WebElement> itemContainers = driver.findElements(By.xpath("//table[@id='shopping-cart-table']//tbody//tr"));
-        List<WishListItem> items = new ArrayList<>();
+        List<CartItem> items = new ArrayList<>();
         for (WebElement container : itemContainers) {
-            items.add(new WishListItem(container));
+            items.add(new CartItem(container));
         }
         return items;
     }
 
     public double getGrandTotal() {
-        WebElement totalElement = cartPageElements.grandPrice;
-        String totalText = totalElement.getText();
+        WebElement grandPrice = driver.findElement(By.xpath("//tfoot//span[@class='price']"));
+        String totalText = grandPrice.getText();
         return parsePrice(totalText);
     }
 
@@ -45,18 +41,21 @@ public class CartPage extends BasePageObject {
     }
 
     public double verifyCartTotalAfterQuantityUpdate() {
-        CartPage cartPage = new CartPage(driver, wait);
-        List<WishListItem> items = cartPage.getCartItems();
+        CartPage cartItem = new CartPage(driver, wait);
+        List<CartItem> items = cartItem.getCartItems();
         String valueQ=" ";
+//        wait.until(ExpectedConditions.urlContains("cart"));
+//        WebElement qtyInput = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(".//input[@class='input-text qty']")));
         if (!items.isEmpty()) {
-            WishListItem firstItem = items.get(0);
+            CartItem firstItem = items.get(0);
+            System.out.println("First Item: " + firstItem);
             firstItem.setQuantity(2);
             firstItem.clickUpdate();
 
             wait.until(ExpectedConditions.stalenessOf(firstItem.quantityInput()));
 
-            List<WishListItem> updatedItems = cartPage.getCartItems();
-            WishListItem updatedFirstItem = updatedItems.get(0);
+            List<CartItem> updatedItems = cartItem.getCartItems();
+            CartItem updatedFirstItem = updatedItems.get(0);
 
             wait.until(ExpectedConditions.textToBePresentInElementValue(updatedFirstItem.quantityInput(), "2"));
             valueQ = updatedFirstItem.quantityInput().getAttribute("value");
@@ -67,9 +66,9 @@ public class CartPage extends BasePageObject {
     }
 
     public double checkTheGrandPrice () {
-            List<WishListItem> items = getCartItems();
+            List<CartItem> items = getCartItems();
             double sum = 0.0;
-            for (WishListItem item : items) {
+            for (CartItem item : items) {
                 System.out.println("Amount item: " + item.getSubtotalPrice());
                 sum += item.getSubtotalPrice();
             }
@@ -84,8 +83,8 @@ public class CartPage extends BasePageObject {
         int previousCount = rows.size();
 
         while (previousCount > 0) {
-            List<WishListItem> items = getCartItems();
-            WishListItem firstItem = items.get(0);
+            List<CartItem> items = getCartItems();
+            CartItem firstItem = items.get(0);
             firstItem.clickDelete().click();
 
             int finalPreviousCount = previousCount;
@@ -107,14 +106,14 @@ public class CartPage extends BasePageObject {
     }
 
     public boolean removeFirstProductFromCart() {
-        List<WishListItem> itemsBefore = getCartItems();
+        List<CartItem> itemsBefore = getCartItems();
         int countBefore = itemsBefore.size();
 
         if (countBefore == 0) {
             System.out.println(" Cart is already empty.");
             return false;
         }
-        WishListItem firstItem = itemsBefore.get(0);
+        CartItem firstItem = itemsBefore.get(0);
         firstItem.clickDelete().click();
         wait.until(ExpectedConditions.stalenessOf(firstItem.getRowRoot()));
         int countAfter = itemsBefore.size();

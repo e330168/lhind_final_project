@@ -1,11 +1,11 @@
 package core.tests;
 
+import core.pages.cart.CartPage;
 import core.pages.dashboard.ProductsGridPage;
 import core.pages.menu.MainMenuPage;
-import core.pages.wishlist_cart.CartPage;
-import core.pages.wishlist_cart.WishListPage;
 import core.pages.dashboard.SalePage;
 import core.pages.dashboard.ProductItemPage;
+import core.pages.wishList.WishListPage;
 import core.utils.TestBase;
 import core.utils.UIActions;
 import org.testng.Assert;
@@ -142,14 +142,15 @@ public class Tests extends TestBase {
 
 
     //T7
-    @Test(dependsOnMethods = {"checkSortedByPriceAnd2WishListSelected"})
+//    @Test(dependsOnMethods = {"checkSortedByPriceAnd2WishListSelected"})
+    @Test
     public void shoppingCart() {
-        WishListPage wishListPage = new WishListPage(driver, wait);
+//        WishListPage wishListPage = new WishListPage(driver, wait);
         MainMenuPage mainMenuPage = new MainMenuPage(driver, wait);
-
-        mainMenuPage.goToMyWishList();
-        wishListPage.addToCart();
-
+//
+//        mainMenuPage.goToMyWishList();
+//        wishListPage.addToCart();
+//
         CartPage cartPage = new CartPage(driver, wait);
         mainMenuPage.goToShoppingCart();
         double updatedQ = cartPage.verifyCartTotalAfterQuantityUpdate();

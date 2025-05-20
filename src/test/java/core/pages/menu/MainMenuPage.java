@@ -1,6 +1,6 @@
 package core.pages.menu;
 
-import core.elements.menu.AccountCartMenuElements;
+import core.elements.navigation.AccountCartMenuElements;
 import core.utils.UIActions;
 import core.utils.WaitUtils;
 import org.openqa.selenium.WebDriver;

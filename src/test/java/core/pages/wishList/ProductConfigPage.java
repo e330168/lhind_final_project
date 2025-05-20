@@ -1,5 +1,6 @@
-package core.pages.wishlist_cart;
+package core.pages.wishList;
 
+import core.elements.wishList.WishListConfigElements;
 import core.utils.BasePageObject;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -11,15 +12,29 @@ import java.util.List;
 public class ProductConfigPage extends BasePageObject {
     private WebDriver driver;
     private WebDriverWait wait;
+    private WishListConfigElements wishListConfigElements;
 
     public ProductConfigPage(WebDriver driver) {
         super(driver);
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        this.wishListConfigElements=new WishListConfigElements();
+    }
+
+    public List<WebElement> getColors(){
+        return wishListConfigElements.selectColor;
+    }
+
+    public List<WebElement> getSizes(){
+        return wishListConfigElements.selectSize;
+    }
+
+    public WebElement addToCartButton(){
+        return wishListConfigElements.addToCartButton;
     }
 
     public void selectColor() {
-        List<WebElement> colorOptions = driver.findElements(By.xpath("//li[contains(@class,'is-media')]"));
+        List<WebElement> colorOptions = getColors();
         if (!colorOptions.isEmpty()) {
             WebElement firstColorLink = colorOptions.get(0).findElement(By.tagName("a"));
             System.out.println(firstColorLink.getText()+" firstColor");
@@ -31,7 +46,7 @@ public class ProductConfigPage extends BasePageObject {
     }
 
     public void selectSize() {
-        List<WebElement> sizeOptions = driver.findElements(By.xpath("//ul[@id='configurable_swatch_size']//li[not(contains(@class, 'not-available'))]"));
+        List<WebElement> sizeOptions = getSizes();
         if (!sizeOptions.isEmpty()) {
             WebElement firstSizeLink = sizeOptions.get(0).findElement(By.tagName("a"));
             System.out.println(firstSizeLink.getText()+" firstSize");
@@ -43,7 +58,7 @@ public class ProductConfigPage extends BasePageObject {
     }
 
     public void addToCart() {
-        WebElement button = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='add-to-cart-buttons']//button")));
+        WebElement button = addToCartButton();
 
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", button);
         wait.until(ExpectedConditions.elementToBeClickable(button));

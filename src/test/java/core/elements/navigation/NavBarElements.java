@@ -1,4 +1,4 @@
-package core.elements.menu;
+package core.elements.navigation;
 
 import core.utils.DriverProvider;
 import org.openqa.selenium.WebElement;
@@ -9,6 +9,7 @@ public class NavBarElements {
     public NavBarElements() {
         PageFactory.initElements(DriverProvider.getDriver(), this);
     }
+
     @FindBy(xpath="//ol[@class='nav-primary']/li/a[text()='Women']")
     public WebElement womenMenu;
 
@@ -20,4 +21,10 @@ public class NavBarElements {
 
     @FindBy(xpath = "//a[text()='View All Men']")
     public WebElement menSubMenu;
+
+    @FindBy(xpath="//ol[@class='nav-primary']/li/a[text()='Sale']")
+    public WebElement saleMenu;
+
+    @FindBy(xpath="//a[text()='View All Sale']")
+    public WebElement saleSubMenu;
 }

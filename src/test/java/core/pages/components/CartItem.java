@@ -1,14 +1,15 @@
-package core.elements.cart;
+package core.pages.components;
 
+import core.elements.cart.CartElements;
 import org.openqa.selenium.WebElement;
 
-public class WishListItem {
-    private final WishListElements elements;
+public class CartItem {
+    private final CartElements elements;
     private final WebElement rowRoot;
 
-    public WishListItem(WebElement rowRoot) {
+    public CartItem(WebElement rowRoot) {
         this.rowRoot = rowRoot;
-        this.elements = new WishListElements(rowRoot);
+        this.elements = new CartElements(rowRoot);
     }
 
     public WebElement getRowRoot() {
@@ -16,14 +17,17 @@ public class WishListItem {
     }
 
     public String getName() {
-        return elements.productName.getText();
+        return elements.productItemElements.productName.getText();
     }
-
-    public WebElement addToCart() {return elements.addToCartButton;}
 
     public WebElement quantityInput() {
         return elements.quantityInput;
     }
+
+    public WebElement getGrandPrice() {
+        return elements.grandPrice;
+    }
+
     public void setQuantity(int quantity) {
         WebElement qtyInput = elements.quantityInput;
         qtyInput.clear();
@@ -31,8 +35,7 @@ public class WishListItem {
     }
 
     public void clickUpdate() {
-        WebElement updateButton = elements.updateQuantity;
-        updateButton.click();
+        elements.updateQuantity.click();
     }
 
     public double getSubtotalPrice() {
@@ -44,6 +47,7 @@ public class WishListItem {
     public WebElement clickDelete() {
         return elements.deleteBin;
     }
+}
 
 //
 //    public WebElement addToCartBF() {
@@ -66,4 +70,4 @@ public class WishListItem {
 //        return elements.selectSize;
 //    }
 
-}
+//}

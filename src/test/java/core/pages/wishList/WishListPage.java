@@ -1,8 +1,9 @@
-package core.pages.wishlist_cart;
+package core.pages.wishList;
 
-import core.elements.cart.WishListItem;
-import core.elements.menu.AccountCartMenuElements;
+import core.elements.navigation.AccountCartMenuElements;
+import core.pages.components.WishListItem;
 import core.pages.menu.MainMenuPage;
+import core.pages.components.CartItem;
 import core.utils.BasePageObject;
 import core.utils.UIActions;
 import core.utils.WaitUtils;
@@ -17,7 +18,7 @@ public class WishListPage extends BasePageObject {
         private  WebDriver driver;
         private  WebDriverWait wait;
         private  AccountCartMenuElements mainMenu;
-        private WishListItem wishListItem;
+        private core.pages.components.CartItem CartItem;
         private MainMenuPage mainMenuPage;
 
     public WishListPage(WebDriver driver, WebDriverWait wait) {
@@ -33,12 +34,13 @@ public class WishListPage extends BasePageObject {
         return rows.stream().map(WishListItem::new).collect(Collectors.toList());
     }
 
+
     public void clickAddToCartForItem(int index) {
         List<WishListItem> items = getItems();
         if (index >= items.size()) {
             throw new IllegalArgumentException("Index out of range");
         }
-        WebElement addToCartBtn = items.get(index).addToCart();
+        WebElement addToCartBtn = items.get(index).addToCartButton();
         WaitUtils.waitForVisible(driver, addToCartBtn);
         UIActions.click(driver, addToCartBtn);
     }
@@ -48,11 +50,10 @@ public class WishListPage extends BasePageObject {
 
         while (true) {
             try {
-                driver.navigate().to("https://ecommerce.tealiumdemo.com/wishlist/");
-                WishListPage cartPage = new WishListPage(driver, wait);
+                WishListPage wishListPage = new WishListPage(driver, wait);
                 ProductConfigPage productConfigPage = new ProductConfigPage(driver);
 
-                List<WishListItem> freshItems = cartPage.getItems();
+                List<WishListItem> freshItems = wishListPage.getItems();
 
                 if (freshItems.isEmpty()) {
                     System.out.println("Wishlist is empty. Finished processing all items.");
@@ -61,7 +62,7 @@ public class WishListPage extends BasePageObject {
                 if (itemIndex >= freshItems.size()) {
                     itemIndex = 0;
                 }
-                cartPage.clickAddToCartForItem(itemIndex);
+                wishListPage.clickAddToCartForItem(itemIndex);
                 wait.until(ExpectedConditions.urlContains("configure"));
 
                 productConfigPage.selectColor();

@@ -1,6 +1,7 @@
 package core.pages.dashboard;
 
-import core.elements.dashboard.ProductsElements;
+import core.elements.dashboard.DashboardElements;
+import core.elements.navigation.NavBarElements;
 import core.utils.BasePageObject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -12,7 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SalePage extends BasePageObject {
-    private ProductsElements productsGridPageElements;
+    private NavBarElements navBar;
+    private DashboardElements dashboardElements;
     WebDriver driver;
     WebDriverWait wait;
 
@@ -20,18 +22,19 @@ public class SalePage extends BasePageObject {
         super(driver);
         this.driver = driver;
         this.wait = wait;
-        this.productsGridPageElements = new ProductsElements();
+        this.navBar = new NavBarElements();
+        this.dashboardElements = new DashboardElements();
     }
 
     public void goToSaleViewAll() {
         Actions actions = new Actions(driver);
-        actions.moveToElement(productsGridPageElements.saleMenu).perform();
-        wait.until(ExpectedConditions.elementToBeClickable(productsGridPageElements.saleSubMenu)).click();
+        actions.moveToElement(navBar.saleMenu).perform();
+        wait.until(ExpectedConditions.elementToBeClickable(navBar.saleSubMenu)).click();
     }
 
     public List<ProductItemPage> getProductItems() {
         List<ProductItemPage> items = new ArrayList<>();
-        for (WebElement product : productsGridPageElements.productItems) {
+        for (WebElement product : dashboardElements.productItems) {
             items.add(new ProductItemPage(product));
         }
         System.out.println("Total products: " + items.size());
@@ -68,7 +71,7 @@ public class SalePage extends BasePageObject {
 
    public void checkMultiplePrices() {
        List<ProductItemPage> items = new ArrayList<>();
-       for (WebElement product : productsGridPageElements.productItems) {
+       for (WebElement product : dashboardElements.productItems) {
            items.add(new ProductItemPage(product));
        }
        items.forEach(ProductItemPage::areShownMultiplePrices);
