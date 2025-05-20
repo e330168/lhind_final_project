@@ -1,4 +1,4 @@
-package core.utils.ScreenshotUtils;
+package core.utils.screenshotUtils;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.TakesScreenshot;
@@ -12,15 +12,17 @@ import java.time.format.DateTimeFormatter;
 
 public class ScreenshotUtil {
 
-    public static void takeScreenshot(WebDriver driver, String testName) {
+    public static String takeScreenshot(WebDriver driver, String testName) {
         File src = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
         String path = "screenshots/" + testName + "_" + timestamp + ".png";
         try {
             FileUtils.copyFile(src, new File(path));
-            System.out.println("📸 Screenshot saved at: " + path);
+            System.out.println("Screenshot saved at: " + path);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return path;
     }
 }

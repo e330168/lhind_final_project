@@ -5,7 +5,8 @@ import core.pages.account.RegisterPage;
 import core.pages.dashboard.ProductsGridPage;
 import core.pages.menu.MainMenuPage;
 import core.utils.CredentialsUtils;
-import core.utils.ScreenshotUtils.ScreenshotListener;
+import core.utils.reportUtils.ReportListenerUtils;
+import core.utils.screenshotUtils.ScreenshotListener;
 import core.utils.SkipLogIn;
 import core.utils.TestBase;
 
@@ -13,7 +14,11 @@ import org.testng.Assert;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-@Listeners(ScreenshotListener.class)
+
+@Listeners({
+        ScreenshotListener.class,
+        ReportListenerUtils.class
+})
 public class AccountTests extends TestBase {
 
     @SkipLogIn

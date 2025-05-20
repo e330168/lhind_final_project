@@ -6,19 +6,23 @@ import core.pages.menu.MainMenuPage;
 import core.pages.dashboard.SalePage;
 import core.pages.dashboard.ProductItemPage;
 import core.pages.wishList.WishListPage;
-import core.utils.ScreenshotUtils.ScreenshotListener;
+import core.utils.SkipLogIn;
+import core.utils.reportUtils.ReportListenerUtils;
+import core.utils.screenshotUtils.ScreenshotListener;
 import core.utils.TestBase;
 import core.utils.UIActions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import java.util.List;
 
-import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.*;
 
-@Listeners(ScreenshotListener.class)
+@Listeners({
+        ScreenshotListener.class,
+        ReportListenerUtils.class
+})
 public class Tests extends TestBase {
 
     @Test
