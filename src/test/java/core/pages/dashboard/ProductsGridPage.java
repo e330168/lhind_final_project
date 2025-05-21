@@ -3,10 +3,12 @@ package core.pages.dashboard;
 import core.elements.dashboard.DashboardElements;
 import core.elements.navigation.NavBarElements;
 import core.elements.navigation.ShopByFilterElements;
+import core.pages.components.ProductItem;
 import core.pages.menu.MainMenuPage;
 import core.utils.BasePageObject;
 import core.utils.UIActions;
 import core.utils.WaitUtils;
+import core.utils.WebElementUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -21,11 +23,11 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class ProductsGridPage extends BasePageObject {
-    private  WebDriver driver;
-    private  WebDriverWait wait;
-    private NavBarElements navBar;
-    private ShopByFilterElements filterPageElements;
-    private DashboardElements dashboard;
+    private final WebDriver driver;
+    private final WebDriverWait wait;
+    private final NavBarElements navBar;
+    private final ShopByFilterElements filterPageElements;
+    private final DashboardElements dashboard;
 
     public ProductsGridPage(WebDriver driver, WebDriverWait wait) {
         super(driver);
@@ -50,13 +52,13 @@ public class ProductsGridPage extends BasePageObject {
         wait.until(ExpectedConditions.elementToBeClickable(navBar.womenSubMenu)).click();
     }
 
-    public List<ProductItemPage> getProductItems() {
-        List<ProductItemPage> items = new ArrayList<>();
+    public List<ProductItem> getProductItems() {
+        List<ProductItem> items = new ArrayList<>();
         for (WebElement product : dashboard.productItems) {
-            items.add(new ProductItemPage(product));
+            items.add(new ProductItem(product));
         }
 //        System.out.println("Total products: " + items.size());
-//        System.out.println("Product details: :");
+//        System.out.println("Product details: ");
 //        System.out.println(" ");
 //        items.forEach(item -> {
 //            String name = item.getName();
@@ -79,15 +81,16 @@ public class ProductsGridPage extends BasePageObject {
 
     public void selectColor() {
         WaitUtils.waitForVisible(driver, filterPageElements.blackColor);
-        UIActions.click(driver, filterPageElements.blackColor);
+        WebElementUtils.jsClick(driver, filterPageElements.blackColor);
+//        UIActions.click(driver, filterPageElements.blackColor);
     }
 
-    public List<ProductItemPage> getProductItemsMen() {
+    public List<ProductItem> getProductItemsMen() {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class*='filter-match']")));
         List<WebElement> elements = dashboard.productItems;
-        List<ProductItemPage> products = new ArrayList<>();
+        List<ProductItem> products = new ArrayList<>();
         for (WebElement el : elements) {
-            products.add(new ProductItemPage(el));
+            products.add(new ProductItem(el));
         }
         System.out.println("Total products: " + products.size());
         System.out.println("Product details: ");
@@ -114,17 +117,17 @@ public class ProductsGridPage extends BasePageObject {
         return Integer.parseInt(items);
     }
 
-    public List<ProductItemPage> getFreshProductItems() {
-        List<ProductItemPage> products = new ArrayList<>();
+    public List<ProductItem> getFreshProductItems() {
+        List<ProductItem> products = new ArrayList<>();
         for (WebElement root : dashboard.productItems) {
-            products.add(new ProductItemPage(root));
+            products.add(new ProductItem(root));
         }
         return products;
     }
 
     public List<Double> getSortedPricesAfterFilter(){
         List<Double> prices =getProductItems().stream()
-                .map(ProductItemPage::getPrice)
+                .map(ProductItem::getPrice)
                 .map(p -> p.replace("$", "").trim())
                 .map(Double::parseDouble)
                 .collect(Collectors.toList());
@@ -134,7 +137,7 @@ public class ProductsGridPage extends BasePageObject {
         clickSortByDropDown();
 
         List<Double> pricesR=getProductItems().stream()
-                .map(ProductItemPage::getPrice)
+                .map(ProductItem::getPrice)
                 .map(p -> p.replace("$", "").trim())
                 .map(Double::parseDouble)
                 .collect(Collectors.toList());
@@ -158,8 +161,8 @@ public class ProductsGridPage extends BasePageObject {
             if (!parts[1].isEmpty()) max = Double.parseDouble(parts[1]);
         }
 
-        List<ProductItemPage> freshProducts = getFreshProductItems();
-        for (ProductItemPage product : freshProducts) {
+        List<ProductItem> freshProducts = getFreshProductItems();
+        for (ProductItem product : freshProducts) {
             String priceText = product.getPrice();
             double actualPrice = Double.parseDouble(priceText.replace("$", "").trim());
 
@@ -195,7 +198,7 @@ public class ProductsGridPage extends BasePageObject {
 
     public List<Double> sortedPriceCollection(){
         List<Double> prices =getProductItems().stream()
-                .map(ProductItemPage::getPrice)
+                .map(ProductItem::getPrice)
                 .map(p -> p.replace("$", "").trim())
                 .map(Double::parseDouble)
                 .collect(Collectors.toList());
@@ -205,9 +208,9 @@ public class ProductsGridPage extends BasePageObject {
     }
 
     public void addToWishList(int productIndex) {
-        List<ProductItemPage> products = new ArrayList<>();
+        List<ProductItem> products = new ArrayList<>();
         for (WebElement product : dashboard.productItems) {
-            products.add(new ProductItemPage(product));
+            products.add(new ProductItem(product));
         }
         WebElement wishListButton = products.get(productIndex).getWishListButton();
 

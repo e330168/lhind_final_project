@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 
 public class ScreenshotUtil {
 
-    public static String takeScreenshot(WebDriver driver, String testName) {
+    public static void takeScreenshot(WebDriver driver, String testName) {
         File src = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
         String path = "screenshots/" + testName + "_" + timestamp + ".png";
@@ -23,6 +23,5 @@ public class ScreenshotUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return path;
     }
 }

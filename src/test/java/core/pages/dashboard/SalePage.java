@@ -2,7 +2,9 @@ package core.pages.dashboard;
 
 import core.elements.dashboard.DashboardElements;
 import core.elements.navigation.NavBarElements;
+import core.pages.components.ProductItem;
 import core.utils.BasePageObject;
+import core.utils.WebElementUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -13,8 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SalePage extends BasePageObject {
-    private NavBarElements navBar;
-    private DashboardElements dashboardElements;
+    private final NavBarElements navBar;
+    private final DashboardElements dashboardElements;
     WebDriver driver;
     WebDriverWait wait;
 
@@ -32,10 +34,10 @@ public class SalePage extends BasePageObject {
         wait.until(ExpectedConditions.elementToBeClickable(navBar.saleSubMenu)).click();
     }
 
-    public List<ProductItemPage> getProductItems() {
-        List<ProductItemPage> items = new ArrayList<>();
+    public List<ProductItem> getProductItems() {
+        List<ProductItem> items = new ArrayList<>();
         for (WebElement product : dashboardElements.productItems) {
-            items.add(new ProductItemPage(product));
+            items.add(new ProductItem(product));
         }
         System.out.println("Total products: " + items.size());
         System.out.println("Product details: ");
@@ -54,26 +56,25 @@ public class SalePage extends BasePageObject {
             System.out.println("Name: " + name);
             System.out.println("Multiple prices shown: " + amountPrices);
             System.out.println(" ");
-            System.out.println("New: ");
-            System.out.println("New Price: " + price);
-            System.out.println("New price color: " + newC);
-            System.out.println("New decorator style: " + newD);
-            System.out.println(" ");
             System.out.println("Old: ");
             System.out.println("Old Price: " + oldPrice);
             System.out.println("Old price color: " + oldC);
             System.out.println("Old decorator style: " + oldD);
-
+            System.out.println(" ");
+            System.out.println("New: ");
+            System.out.println("New Price: " + price);
+            System.out.println("New price color: " + newC);
+            System.out.println("New decorator style: " + newD);
             System.out.println(" ");
         });
         return items;
     }
 
    public void checkMultiplePrices() {
-       List<ProductItemPage> items = new ArrayList<>();
+       List<ProductItem> items = new ArrayList<>();
        for (WebElement product : dashboardElements.productItems) {
-           items.add(new ProductItemPage(product));
+           items.add(new ProductItem(product));
        }
-       items.forEach(ProductItemPage::areShownMultiplePrices);
+       items.forEach(ProductItem::areShownMultiplePrices);
    }
 }

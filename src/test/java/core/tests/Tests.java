@@ -4,9 +4,8 @@ import core.pages.cart.CartPage;
 import core.pages.dashboard.ProductsGridPage;
 import core.pages.menu.MainMenuPage;
 import core.pages.dashboard.SalePage;
-import core.pages.dashboard.ProductItemPage;
+import core.pages.components.ProductItem;
 import core.pages.wishList.WishListPage;
-import core.utils.SkipLogIn;
 import core.utils.reportUtils.ReportListenerUtils;
 import core.utils.screenshotUtils.ScreenshotListener;
 import core.utils.TestBase;
@@ -30,7 +29,7 @@ public class Tests extends TestBase {
         ProductsGridPage ProductsGridPage = new ProductsGridPage(driver, wait);
         ProductsGridPage.goToWomenViewAll();
 
-        List<ProductItemPage> items = ProductsGridPage.getProductItems();
+        List<ProductItem> items = ProductsGridPage.getProductItems();
         Assert.assertFalse(items.isEmpty(), "Product list should not be empty.");
 
         int itemsCount = items.size();
@@ -43,7 +42,7 @@ public class Tests extends TestBase {
         ProductsGridPage ProductsGridPage = new ProductsGridPage(driver, wait);
         ProductsGridPage.goToWomenViewAll();
 
-        ProductItemPage womenProduct = ProductsGridPage.getProductItems().get(3);
+        ProductItem womenProduct = ProductsGridPage.getProductItems().get(3);
         System.out.println(womenProduct.getName());
 
         //        .no-touch .product-image:hover {
@@ -69,7 +68,7 @@ public class Tests extends TestBase {
         ProductsGridPage ProductsGridPage = new ProductsGridPage(driver, wait);
         ProductsGridPage.goToMenViewAll();
 
-        List<ProductItemPage> items = ProductsGridPage.getProductItems();
+        List<ProductItem> items = ProductsGridPage.getProductItems();
         Assert.assertFalse(items.isEmpty(), "Product list should not be empty.");
         assertEquals(items.size(), 12, "Total number of products in list should be 12.");
     }
@@ -82,8 +81,7 @@ public class Tests extends TestBase {
         salePage.getProductItems();
         salePage.checkMultiplePrices();
 
-        List<ProductItemPage> products = salePage.getProductItems();
-
+        List<ProductItem> products = salePage.getProductItems();
         assertEquals(products.size(), 4);
 
         products.forEach(product -> {
@@ -99,7 +97,7 @@ public class Tests extends TestBase {
 
             Assert.assertTrue(
                     product.checkNewPriceStyle(),
-                    "Final price should have color rgba(51, 153, 204) and no line-through decoration."
+                    "Final price should have color rgba(51, 153, 204, 1) and no line-through decoration."
             );
         });
     }
@@ -111,7 +109,7 @@ public class Tests extends TestBase {
         ProductsGridPage.goToMenViewAll();
         ProductsGridPage.selectColor();
 
-        List<ProductItemPage> products = ProductsGridPage.getProductItemsMen();
+        List<ProductItem> products = ProductsGridPage.getProductItemsMen();
         assertEquals(products.size(), 3);
         products.forEach(product -> {
             assertEquals(product.getBorderOfSelectedColor(), "rgb(51, 153, 204)", "Border of selected color should be rgb(51, 153, 204).");

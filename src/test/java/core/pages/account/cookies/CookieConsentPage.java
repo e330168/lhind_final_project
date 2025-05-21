@@ -11,7 +11,7 @@ public class CookieConsentPage {
     private final By optInRadio = By.id("privacy_pref_optin");
     private final By submitButton = By.id("consent_prompt_submit");
     private final By prompt = By.className("privacy_prompt");
-    private By cookieAcceptButton = By.id("privacy_pref_optin");
+    private final By cookieAcceptButton = By.id("privacy_pref_optin");
 
     public void acceptCookies(WebDriverWait wait) {
         try {
@@ -26,6 +26,7 @@ public class CookieConsentPage {
                 wait.until(ExpectedConditions.invisibilityOfElementLocated(prompt));
             }
         } catch (TimeoutException e) {
+            e.printStackTrace();
         }
     }
 }

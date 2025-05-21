@@ -5,18 +5,16 @@ import core.utils.UIActions;
 import core.utils.WaitUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class MainMenuPage {
-    private WebDriver driver;
-    private WebDriverWait wait;
-    private AccountMenuElements mainMenuElements;
+    private final WebDriver driver;
+    private final WebDriverWait wait;
+    private final AccountMenuElements mainMenuElements;
 
     public MainMenuPage(WebDriver driver, WebDriverWait wait) {
         this.driver = driver;
         this.wait = wait;
-        PageFactory.initElements(driver, this);
         mainMenuElements = new AccountMenuElements();
     }
 

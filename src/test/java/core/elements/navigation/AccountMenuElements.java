@@ -28,6 +28,4 @@ public class AccountMenuElements {
     @FindBy(linkText = "Log Out")
     public WebElement logOutSubMenu;
 
-    @FindBy(xpath="//span[@class='count']")
-    public WebElement nrOfCartProd;
 }

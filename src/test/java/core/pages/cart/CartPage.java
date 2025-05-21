@@ -1,6 +1,6 @@
 package core.pages.cart;
 
-import core.elements.navigation.AccountMenuElements;
+import core.elements.dashboard.DashboardElements;
 import core.pages.components.CartItem;
 import core.utils.BasePageObject;
 import org.openqa.selenium.*;
@@ -11,15 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CartPage extends BasePageObject {
-    private WebDriver driver;
-    private WebDriverWait wait;
-    private AccountMenuElements accountMenu;
+    private final WebDriver driver;
+    private final WebDriverWait wait;
+    private DashboardElements dashboard;
 
     public CartPage(WebDriver driver, WebDriverWait wait) {
         super(driver);
         this.driver = driver;
         this.wait = wait;
-        this.accountMenu=new AccountMenuElements();
+        this.dashboard = new DashboardElements();
     }
 
     public List<CartItem> getCartItems() {
@@ -87,14 +87,14 @@ public class CartPage extends BasePageObject {
             return;
         }
         CartItem firstItem = cartItems.get(0);
-        WebElement staleElement = firstItem.getRowRoot();
+        WebElement staleElement = firstItem.getCartItemRow();
 
         firstItem.clickDelete().click();
         wait.until(ExpectedConditions.stalenessOf(staleElement));
     }
 
     public boolean isCartEmptyMessageDisplayed() {
-        WebElement emptyMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='cart-empty']//p")));
+        WebElement emptyMessage = wait.until(ExpectedConditions.visibilityOf(dashboard.emptyCartMessage));
         return emptyMessage.getText().contains("You have no items in your shopping cart.");
     }
 }

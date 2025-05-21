@@ -20,4 +20,7 @@ public class DashboardElements {
     @FindBy(xpath = "//ul[@class='products-grid products-grid--max-4-col first last odd']/li")
     public List<WebElement> productItems;
 
+    @FindBy(xpath="//div[@class='cart-empty']//p")
+    public WebElement emptyCartMessage;
+
 }

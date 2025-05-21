@@ -5,7 +5,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.DefaultElementLocatorFactory;
 
-
 public class ProductElements {
     public ProductElements(WebElement productRoot) {
         PageFactory.initElements(new DefaultElementLocatorFactory(productRoot), this);

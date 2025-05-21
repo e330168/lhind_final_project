@@ -30,12 +30,12 @@ public class ReportListenerUtils implements ITestListener {
     @Override
     public void onTestFailure(ITestResult result) {
         test.get().log(Status.FAIL, "Test Failed: " + result.getThrowable());
-        String screenshotPath = ScreenshotUtil.takeScreenshot(driver, result.getName());
-
-        if (screenshotPath != null && !screenshotPath.isEmpty()) {
-            test.get().fail(result.getThrowable())
-                    .addScreenCaptureFromPath(screenshotPath);
-        }
+//        String screenshotPath = ScreenshotUtil.takeScreenshot(driver, result.getName());
+//
+//        if (screenshotPath != null && !screenshotPath.isEmpty()) {
+//            test.get().fail(result.getThrowable())
+//                    .addScreenCaptureFromPath(screenshotPath);
+//        }
     }
 
     @Override

@@ -1,9 +1,6 @@
 package core.pages.wishList;
 
-import core.elements.navigation.AccountMenuElements;
-import core.pages.components.CartItem;
 import core.pages.components.WishListItem;
-import core.pages.menu.MainMenuPage;
 import core.utils.BasePageObject;
 import core.utils.UIActions;
 import core.utils.WaitUtils;
@@ -15,43 +12,39 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class WishListPage extends BasePageObject {
-        private  WebDriver driver;
-        private  WebDriverWait wait;
-        private  AccountMenuElements mainMenu;
-        private MainMenuPage mainMenuPage;
+        private final WebDriver driver;
+        private final WebDriverWait wait;
 
     public WishListPage(WebDriver driver, WebDriverWait wait) {
         super(driver);
         this.driver = driver;
         this.wait = wait;
-        this.mainMenu = new AccountMenuElements();
-        this.mainMenuPage = new MainMenuPage(driver, wait);
     }
 
-    public List<WishListItem> getItems() {
-        List<WebElement> rows = driver.findElements(By.xpath("//table[@id='wishlist-table']//tbody//tr"));
-        return rows.stream().map(WishListItem::new).collect(Collectors.toList());
+    public List<WishListItem> getWishListItems() {
+        List<WebElement> wishListItems = driver.findElements(By.xpath("//table[@id='wishlist-table']//tbody//tr"));
+        return wishListItems.stream().map(WishListItem::new).collect(Collectors.toList());
     }
-
 
     public void clickAddToCartForItem(int index) {
-        List<WishListItem> items = getItems();
-        if (index >= items.size()) {
+        List<WishListItem> wishListItems = getWishListItems();
+        if (index >= wishListItems.size()) {
             throw new IllegalArgumentException("Index out of range");
         }
-        WebElement addToCartBtn = items.get(index).addToCartButton();
+        WebElement addToCartBtn = wishListItems.get(index).addToCartButton();
+        System.out.println(wishListItems.get(index).getProductName()+" "+ wishListItems.get(index).getPrice());
         WaitUtils.waitForVisible(driver, addToCartBtn);
         UIActions.click(driver, addToCartBtn);
     }
 
     public void addToCart() {
         WishListPage wishListPage = new WishListPage(driver, wait);
-        ProductConfigPage productConfigPage = new ProductConfigPage(driver);
+        ProductConfigPage productConfigPage = new ProductConfigPage(driver,wait);
 
-        int totalItems = wishListPage.getItems().size();
+        int totalItems = wishListPage.getWishListItems().size();
 
         for (int i = 0; i < totalItems; i++) {
-            List<WishListItem> currentItems = wishListPage.getItems();
+            List<WishListItem> currentItems = wishListPage.getWishListItems();
 
             if (currentItems.isEmpty()) {
                 System.out.println("Wishlist is empty.");
@@ -72,11 +65,9 @@ public class WishListPage extends BasePageObject {
                 wait.until(ExpectedConditions.urlContains("/wishlist"));
             } else {
                 driver.navigate().forward();
-                System.out.println("All items processed. Staying on cart page.");
+                System.out.println("All products are moved from wishlist to cart.");
             }
         }
     }
-
-
 
 }

@@ -5,15 +5,15 @@ import org.openqa.selenium.WebElement;
 
 public class CartItem {
     private final CartElements elements;
-    private final WebElement rowRoot;
+    private WebElement cartItemRow;
 
-    public CartItem(WebElement rowRoot) {
-        this.rowRoot = rowRoot;
-        this.elements = new CartElements(rowRoot);
+    public CartItem(WebElement cartItemRow) {
+        this.cartItemRow = cartItemRow;
+        this.elements = new CartElements(cartItemRow);
     }
 
-    public WebElement getRowRoot() {
-        return rowRoot;
+    public WebElement getCartItemRow() {
+        return cartItemRow;
     }
 
     public String getName() {

@@ -67,10 +67,8 @@ public class RegisterPage extends RegisterElements {
         }
     }
 
-
     public void checkboxRM() {
         if (!WebElementUtils.isElementDisplayed(RegisterElements.checkbox)) return;
-
         try {
             WebElementUtils.safeClick(driver, RegisterElements.checkbox, 5);
         } catch (Exception e) {
@@ -96,7 +94,4 @@ public class RegisterPage extends RegisterElements {
         CredentialsUtils.saveCredential("fullName", fullName);
     }
 
-    public String getSuccessMessage() {
-        return verifyRegistration.getText();
-    }
 }

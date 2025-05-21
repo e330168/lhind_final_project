@@ -5,16 +5,10 @@ import core.elements.wishList.WishListElements;
 import org.openqa.selenium.WebElement;
 
 public class WishListItem {
-    private final WebElement rowRoot;
     private final WishListElements elements;
 
-    public WishListItem(WebElement rowRoot) {
-        this.rowRoot = rowRoot;
-        this.elements = new WishListElements(rowRoot);
-    }
-
-    public WebElement getRowRoot() {
-        return rowRoot;
+    public WishListItem(WebElement wishListItemRow) {
+        this.elements = new WishListElements(wishListItemRow);
     }
 
     public WebElement addToCartButton() {
