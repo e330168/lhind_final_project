@@ -1,7 +1,8 @@
 package core.pages.cart;
 
-import core.elements.dashboard.DashboardElements;
+import core.elements.dashboard.DashboardPageElements;
 import core.pages.components.CartItem;
+import core.pages.navigation.DashboardPage;
 import core.utils.BasePageObject;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -13,13 +14,13 @@ import java.util.List;
 public class CartPage extends BasePageObject {
     private final WebDriver driver;
     private final WebDriverWait wait;
-    private DashboardElements dashboard;
+    private final DashboardPage dashboardPage;
 
     public CartPage(WebDriver driver, WebDriverWait wait) {
         super(driver);
         this.driver = driver;
         this.wait = wait;
-        this.dashboard = new DashboardElements();
+        this.dashboardPage = new DashboardPage(driver, wait);
     }
 
     public List<CartItem> getCartItems() {
@@ -94,7 +95,7 @@ public class CartPage extends BasePageObject {
     }
 
     public boolean isCartEmptyMessageDisplayed() {
-        WebElement emptyMessage = wait.until(ExpectedConditions.visibilityOf(dashboard.emptyCartMessage));
+        WebElement emptyMessage = wait.until(ExpectedConditions.visibilityOf(dashboardPage.emptyCartMessage()));
         return emptyMessage.getText().contains("You have no items in your shopping cart.");
     }
 }

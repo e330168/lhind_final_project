@@ -27,4 +27,5 @@ public class NavBarElements {
 
     @FindBy(xpath="//a[text()='View All Sale']")
     public WebElement saleSubMenu;
+
 }

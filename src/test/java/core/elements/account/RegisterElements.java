@@ -34,7 +34,4 @@ public class RegisterElements {
     @FindBy(xpath = "//button[@title='Register']")
     public  WebElement registerButton;
 
-    @FindBy(xpath = "//li[@class='success-msg']//span")
-    public  WebElement verifyRegistration;
-
 }

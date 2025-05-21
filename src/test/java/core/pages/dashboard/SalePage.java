@@ -1,22 +1,17 @@
 package core.pages.dashboard;
 
-import core.elements.dashboard.DashboardElements;
-import core.elements.navigation.NavBarElements;
+import core.elements.dashboard.DashboardPageElements;
 import core.pages.components.ProductItem;
 import core.utils.BasePageObject;
-import core.utils.WebElementUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SalePage extends BasePageObject {
-    private final NavBarElements navBar;
-    private final DashboardElements dashboardElements;
+    private final DashboardPageElements dashboardElements;
     WebDriver driver;
     WebDriverWait wait;
 
@@ -24,14 +19,7 @@ public class SalePage extends BasePageObject {
         super(driver);
         this.driver = driver;
         this.wait = wait;
-        this.navBar = new NavBarElements();
-        this.dashboardElements = new DashboardElements();
-    }
-
-    public void goToSaleViewAll() {
-        Actions actions = new Actions(driver);
-        actions.moveToElement(navBar.saleMenu).perform();
-        wait.until(ExpectedConditions.elementToBeClickable(navBar.saleSubMenu)).click();
+        this.dashboardElements = new DashboardPageElements();
     }
 
     public List<ProductItem> getProductItems() {

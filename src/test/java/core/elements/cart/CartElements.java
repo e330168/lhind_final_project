@@ -7,13 +7,12 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.DefaultElementLocatorFactory;
 
 public class CartElements{
+    public ProductElements productElements;
 
     public CartElements(WebElement root) {
         PageFactory.initElements(new DefaultElementLocatorFactory(root), this);
-        this.ProductElements = new ProductElements(root);
+        this.productElements = new ProductElements(root);
     }
-
-    public ProductElements ProductElements;
 
     @FindBy(xpath="//td[@class='product-cart-actions']//button")
     public WebElement updateQuantity;

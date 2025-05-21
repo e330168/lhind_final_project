@@ -1,8 +1,6 @@
 package core.tests;
 
 import core.pages.cart.CartPage;
-import core.pages.dashboard.ProductsGridPage;
-import core.pages.menu.MainMenuPage;
 import core.pages.dashboard.SalePage;
 import core.pages.components.ProductItem;
 import core.pages.wishList.WishListPage;
@@ -18,18 +16,14 @@ import java.util.List;
 
 import static org.testng.Assert.*;
 
-@Listeners({
-        ScreenshotListener.class,
-        ReportListenerUtils.class
-})
+@Listeners({ ScreenshotListener.class,ReportListenerUtils.class})
 public class Tests extends TestBase {
 
     @Test
     public void testProductList() {
-        ProductsGridPage ProductsGridPage = new ProductsGridPage(driver, wait);
-        ProductsGridPage.goToWomenViewAll();
+        navBar.goToWomenViewAll();
 
-        List<ProductItem> items = ProductsGridPage.getProductItems();
+        List<ProductItem> items = womenPage.getProductItems();
         Assert.assertFalse(items.isEmpty(), "Product list should not be empty.");
 
         int itemsCount = items.size();
@@ -39,10 +33,9 @@ public class Tests extends TestBase {
     //T3
     @Test
     public void hoverWomenProduct() {
-        ProductsGridPage ProductsGridPage = new ProductsGridPage(driver, wait);
-        ProductsGridPage.goToWomenViewAll();
+        navBar.goToWomenViewAll();
 
-        ProductItem womenProduct = ProductsGridPage.getProductItems().get(3);
+        ProductItem womenProduct = womenPage.getProductItems().get(3);
         System.out.println(womenProduct.getName());
 
         //        .no-touch .product-image:hover {
@@ -65,10 +58,9 @@ public class Tests extends TestBase {
 
     @Test
     public void testMenProductList() {
-        ProductsGridPage ProductsGridPage = new ProductsGridPage(driver, wait);
-        ProductsGridPage.goToMenViewAll();
+        navBar.goToMenViewAll();
 
-        List<ProductItem> items = ProductsGridPage.getProductItems();
+        List<ProductItem> items = menPage.getProductItems();
         Assert.assertFalse(items.isEmpty(), "Product list should not be empty.");
         assertEquals(items.size(), 12, "Total number of products in list should be 12.");
     }
@@ -77,7 +69,7 @@ public class Tests extends TestBase {
     @Test
     public void checkSaleProductsStyle() {
         SalePage salePage = new SalePage(driver, wait);
-        salePage.goToSaleViewAll();
+        navBar.goToSaleViewAll();
         salePage.getProductItems();
         salePage.checkMultiplePrices();
 
@@ -105,44 +97,42 @@ public class Tests extends TestBase {
     //T5
     @Test
     public void checkPageFilters() {
-        ProductsGridPage ProductsGridPage = new ProductsGridPage(driver, wait);
-        ProductsGridPage.goToMenViewAll();
-        ProductsGridPage.selectColor();
+        navBar.goToMenViewAll();
+        menPage.selectColor();
 
-        List<ProductItem> products = ProductsGridPage.getProductItemsMen();
+        List<ProductItem> products = menPage.getProductItemsMen();
         assertEquals(products.size(), 3);
         products.forEach(product -> {
             assertEquals(product.getBorderOfSelectedColor(), "rgb(51, 153, 204)", "Border of selected color should be rgb(51, 153, 204).");
         });
 
         driver.navigate().back();
-        ProductsGridPage.clickOnPriceFilter();
+        menPage.clickOnPriceFilter();
 
-        int priceFilterCount = ProductsGridPage.priceFilterCount();
-        int totalProducts = ProductsGridPage.getProductItems().size();
+        int priceFilterCount = menPage.priceFilterCount();
+        int totalProducts = menPage.getProductItems().size();
 
         assertEquals(totalProducts, 3, "Total products displayed count should be 3.");
         assertEquals(totalProducts, priceFilterCount, "Total products displayed count should be 3.");
 
-        Assert.assertTrue(ProductsGridPage.areAllPricesInRangeAfterFiltering());
+        Assert.assertTrue(menPage.areAllPricesInRangeAfterFiltering());
     }
 
     //T6
     @Test
     public void checkSortedByPriceAnd2WishListSelected() {
-        ProductsGridPage ProductsGridPage = new ProductsGridPage(driver, wait);
-        ProductsGridPage.goToWomenViewAll();
+        navBar.goToWomenViewAll();
 
-        List<Double>pricesR = ProductsGridPage.getSortedPricesAfterFilter();
-        List<Double> reg = ProductsGridPage.sortedPriceCollection();
+        List<Double>pricesAfterFilter = womenPage.getSortedPricesAfterFilter();
+        List<Double>pricesCollSort = womenPage.sortedPriceCollection();
 
-        assertEquals(pricesR, reg, "Prices are not sorted in ascending order.");
+        assertEquals(pricesAfterFilter, pricesCollSort, "Prices are not sorted in ascending order.");
 
-        ProductsGridPage.addToWishList(0);
+        womenPage.addToWishList(0);
         driver.navigate().back();
-        ProductsGridPage.addToWishList(1);
+        womenPage.addToWishList(1);
 
-        int nrWishListProd = ProductsGridPage.nrItemsWishListSubMenu();
+        int nrWishListProd = womenPage.nrItemsWishListSubMenu();
         assertEquals(nrWishListProd, 2, "Wishlist count does not match expected.");
     }
 
@@ -151,9 +141,8 @@ public class Tests extends TestBase {
 //    @Test
     @Test(dependsOnMethods = {"checkSortedByPriceAnd2WishListSelected"})
     public void shoppingCart() {
-        WishListPage wishListPage = new WishListPage(driver, wait);
-        MainMenuPage mainMenuPage = new MainMenuPage(driver, wait);
         CartPage cartPage = new CartPage(driver, wait);
+        WishListPage wishListPage = new WishListPage(driver, wait);
 
         mainMenuPage.goToMyWishList();
         wishListPage.addToCart();
@@ -171,11 +160,10 @@ public class Tests extends TestBase {
 
 
     //T8
-    @Test
-//    @Test(dependsOnMethods = {"shoppingCart","checkSortedByPriceAnd2WishListSelected"})
+//    @Test
+    @Test(dependsOnMethods = {"shoppingCart","checkSortedByPriceAnd2WishListSelected"})
     public void testDeleteAllItemsFromCart() {
         CartPage cartPage = new CartPage(driver, wait);
-        MainMenuPage mainMenuPage = new MainMenuPage(driver, wait);
         mainMenuPage.goToShoppingCart();
 
         cartPage.getCartItems();

@@ -17,7 +17,7 @@ public class CartItem {
     }
 
     public String getName() {
-        return elements.ProductElements.productName.getText();
+        return elements.productElements.productName.getText();
     }
 
     public WebElement quantityInput() {
