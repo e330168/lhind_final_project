@@ -7,11 +7,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class DashboardPage extends BasePageObject {
     private final DashboardPageElements dashboard;
-    private final WebDriver driver;
 
     public DashboardPage(WebDriver driver, WebDriverWait wait) {
         super(driver);
-        this.driver = driver;
         this.wait = wait;
         this.dashboard = new DashboardPageElements();
     }

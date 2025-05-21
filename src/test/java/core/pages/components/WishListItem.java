@@ -1,6 +1,5 @@
 package core.pages.components;
 
-
 import core.elements.wishList.WishListElements;
 import org.openqa.selenium.WebElement;
 
@@ -21,10 +20,6 @@ public class WishListItem {
 
     public String getPrice() {
         return elements.ProductElements.price.getText();
-    }
-
-    public WebElement getImage() {
-        return elements.ProductElements.image;
     }
 
 }

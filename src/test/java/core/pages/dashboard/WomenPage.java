@@ -132,7 +132,7 @@ public class WomenPage extends BasePageObject {
         wait.until(ExpectedConditions.urlContains("wishlist"));
 
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@data-target-element='#header-account']")));
-        MainMenuPage mainMenuPage = new MainMenuPage(driver, wait);
+        MainMenuPage mainMenuPage = new MainMenuPage(driver);
         mainMenuPage.goToAccount();
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='links']//li[2]//a")));

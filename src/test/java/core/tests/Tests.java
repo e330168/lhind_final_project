@@ -13,7 +13,6 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import java.util.List;
-
 import static org.testng.Assert.*;
 
 @Listeners({ ScreenshotListener.class,ReportListenerUtils.class})
@@ -138,7 +137,6 @@ public class Tests extends TestBase {
 
 
     //T7
-//    @Test
     @Test(dependsOnMethods = {"checkSortedByPriceAnd2WishListSelected"})
     public void shoppingCart() {
         CartPage cartPage = new CartPage(driver, wait);
@@ -160,7 +158,6 @@ public class Tests extends TestBase {
 
 
     //T8
-//    @Test
     @Test(dependsOnMethods = {"shoppingCart","checkSortedByPriceAnd2WishListSelected"})
     public void testDeleteAllItemsFromCart() {
         CartPage cartPage = new CartPage(driver, wait);

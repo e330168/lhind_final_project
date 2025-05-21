@@ -33,14 +33,14 @@ public class BasePageObject {
 
     public WaitUtils getWaitUtils() {
         if (waitUtils == null) {
-            waitUtils = new WaitUtils(getDriver(), defaultDuration);
+            waitUtils = new WaitUtils(defaultDuration);
         }
         return waitUtils;
     }
 
     public WebElementUtils getWebElementUtils() {
         if (webElementUtils == null) {
-            webElementUtils = new WebElementUtils(getDriver(), defaultDuration);
+            webElementUtils = new WebElementUtils();
         }
         return webElementUtils;
     }

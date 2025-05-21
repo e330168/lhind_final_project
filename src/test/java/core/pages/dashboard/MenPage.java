@@ -54,6 +54,7 @@ public class MenPage extends BasePageObject {
         WaitUtils.waitForVisible(driver, filterPageElements.blackColor);
         UIActions.click(driver, filterPageElements.blackColor);
     }
+
     public void clickOnPriceFilter() {
         WaitUtils.waitForVisible(driver, filterPageElements.priceFilter09);
         UIActions.click(driver, filterPageElements.priceFilter09);

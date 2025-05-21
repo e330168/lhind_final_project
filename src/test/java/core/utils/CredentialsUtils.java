@@ -22,7 +22,7 @@ public class CredentialsUtils {
     public static void saveCredential(String key, String value) {
         props.setProperty(key, value);
         try (OutputStream output = new FileOutputStream(FILE_PATH)) {
-            props.store(output, "User Credentials");
+            props.store(output, "User Credentials.");
         } catch (IOException e) {
             e.printStackTrace();
         }

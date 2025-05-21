@@ -1,7 +1,10 @@
 package core.pages.account;
 
 import core.elements.account.LogInElements;
-import core.utils.*;
+import core.utils.BasePageObject;
+import core.utils.CredentialsUtils;
+import core.utils.DriverProvider;
+import core.utils.WebElementUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 

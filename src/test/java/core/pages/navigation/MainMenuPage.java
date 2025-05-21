@@ -5,16 +5,13 @@ import core.utils.UIActions;
 import core.utils.WaitUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class MainMenuPage {
     private final WebDriver driver;
-    private final WebDriverWait wait;
     private final AccountMenuElements accountMenu;
 
-    public MainMenuPage(WebDriver driver, WebDriverWait wait) {
+    public MainMenuPage(WebDriver driver) {
         this.driver = driver;
-        this.wait = wait;
         accountMenu = new AccountMenuElements();
     }
 

@@ -38,7 +38,7 @@ public class ProductItem {
         return productElements.selectedColor.getCssValue("border-color");
     }
 
-    public WebElement getOriginalPriceStyle(){
+    public WebElement getOriginalPriceStyle() {
         return productElements.oldPrice;
     }
 
@@ -55,15 +55,15 @@ public class ProductItem {
     }
 
     public boolean checkOldPriceStyle() {
-        String colStyle=getOriginalPriceStyle().getCssValue("color");
-        String decStyle=getOriginalPriceStyle().getCssValue("text-decoration-line");
+        String colStyle = getOriginalPriceStyle().getCssValue("color");
+        String decStyle = getOriginalPriceStyle().getCssValue("text-decoration-line");
 
         return colStyle.equals("rgba(160, 160, 160, 1)") && decStyle.equals("line-through");
     }
 
     public boolean checkNewPriceStyle() {
-        String colStyle=getFinalPrice().getCssValue("color");
-        String decStyle=getFinalPrice().getCssValue("text-decoration-line");
+        String colStyle = getFinalPrice().getCssValue("color");
+        String decStyle = getFinalPrice().getCssValue("text-decoration-line");
 
         return colStyle.equals("rgba(51, 153, 204, 1)") && !decStyle.equals("line-through");
     }

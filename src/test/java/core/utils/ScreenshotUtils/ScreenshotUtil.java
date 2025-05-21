@@ -18,8 +18,6 @@ public class ScreenshotUtil {
         String path = "screenshots/" + testName + "_" + timestamp + ".png";
         try {
             FileUtils.copyFile(src, new File(path));
-            System.out.println("Screenshot saved at: " + path);
-
         } catch (IOException e) {
             e.printStackTrace();
         }

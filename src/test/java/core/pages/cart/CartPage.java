@@ -1,6 +1,5 @@
 package core.pages.cart;
 
-import core.elements.dashboard.DashboardPageElements;
 import core.pages.components.CartItem;
 import core.pages.navigation.DashboardPage;
 import core.utils.BasePageObject;

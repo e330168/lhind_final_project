@@ -8,9 +8,6 @@ import java.time.Duration;
 
     public class WebElementUtils {
 
-        public WebElementUtils(DriverProvider driver, Duration defaultDuration) {
-        }
-
         public void sendKeysToElementWithWait(WebElement element, String value, long millsWait) {
         element.sendKeys(value);
         WaitUtils.waitFor(millsWait);

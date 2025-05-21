@@ -3,7 +3,6 @@ package core.tests;
 import core.pages.account.LogInPage;
 import core.pages.account.RegisterPage;
 import core.pages.navigation.DashboardPage;
-import core.pages.navigation.MainMenuPage;
 import core.utils.CredentialsUtils;
 import core.utils.reportUtils.ReportListenerUtils;
 import core.utils.screenshotUtils.ScreenshotListener;
@@ -14,7 +13,6 @@ import org.testng.Assert;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-
 @Listeners({ScreenshotListener.class, ReportListenerUtils.class})
 public class AccountTests extends TestBase {
 
@@ -22,8 +20,7 @@ public class AccountTests extends TestBase {
     @Test
     public void createAccount() {
 //        if (!CredentialsUtils.hasCredentials()) {
-            MainMenuPage menu = new MainMenuPage(driver, wait);
-            menu.goToRegister();
+            mainMenuPage.goToRegister();
 
             RegisterPage register = new RegisterPage(driver);
             String email = "am" + System.currentTimeMillis() + "@gmail.com";
@@ -38,15 +35,14 @@ public class AccountTests extends TestBase {
             String regMessage="Thank you for registering with Tealium Ecommerce.";
 
             Assert.assertTrue(successM.equals(regMessage),"Not registered successfully.");
-            menu.logout();
+            mainMenuPage.logout();
 //        }
     }
 
     @SkipLogIn
     @Test
     public void logIn() {
-        MainMenuPage menu = new MainMenuPage(driver, wait);
-        menu.goToLogin();
+        mainMenuPage.goToLogin();
 
         LogInPage loginPage = new LogInPage(driver,wait);
         loginPage.logIn();

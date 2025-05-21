@@ -9,8 +9,7 @@ import core.pages.navigation.MainMenuPage;
 import core.pages.navigation.NavBarMenuPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.ITestResult;
-import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -33,7 +32,7 @@ public class TestBase {
         driver.get(AppConstants.BASE_URL);
 
         navBar = new NavBarMenuPage(driver, wait);
-        mainMenuPage = new MainMenuPage(driver, wait);
+        mainMenuPage = new MainMenuPage(driver);
         womenPage = new WomenPage(driver, wait);
         menPage = new MenPage(driver, wait);
 
@@ -56,33 +55,8 @@ public class TestBase {
         loginPage.logIn();
     }
 
-
-    @AfterMethod
-    public void tearDown(ITestResult result) {
-        if ((result.getMethod().getMethodName().equals("checkSortedByPriceAnd2WishListSelected") ||
-                (result.getMethod().getMethodName().equals("shoppingCart"))) &&
-                result.getStatus() == ITestResult.SUCCESS) {
-            return;
-        }
-        if (driver != null) {
-                driver.quit();
-                driver = null;
-            }
+    @AfterClass
+    public void tearDown() {
+        driver.quit();
     }
 }
-
-
-
-
-//    @AfterMethod
-//    public void tearDown(ITestResult result, ITestContext context) {
-//        String currentMethod = result.getMethod().getMethodName();
-//
-//        boolean hasDependentScheduled = Arrays.stream(context.getAllTestMethods())
-//                .anyMatch(m -> Arrays.asList(m.getMethodsDependedUpon()).contains(currentMethod));
-//
-//        if (!hasDependentScheduled && driver != null) {
-//            driver.quit();
-//            driver = null;
-//        }
-//    }
