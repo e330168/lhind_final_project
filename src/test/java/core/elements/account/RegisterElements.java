@@ -5,8 +5,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class RegisterPageElements {
-    public RegisterPageElements(){
+public class RegisterElements {
+    public RegisterElements(){
         PageFactory.initElements(DriverProvider.getDriver(), this);
     }
 
@@ -33,8 +33,5 @@ public class RegisterPageElements {
 
     @FindBy(xpath = "//button[@title='Register']")
     public  WebElement registerButton;
-
-    @FindBy(xpath = "//li[@class='success-msg']//span")
-    public  WebElement verifyRegistration;
 
 }

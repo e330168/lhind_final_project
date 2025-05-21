@@ -5,17 +5,13 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
-import java.util.List;
 
 public class WaitUtils {
-    private DriverProvider driverP;
     private Duration defaultDuration;
     private WebDriver driver = DriverProvider.getDriver();
-    private WebDriverWait wait;
     private static final int TIMEOUT = 5;
 
-    public WaitUtils(DriverProvider driverP, Duration defaultDuration) {
-        this.driverP = driverP;
+    public WaitUtils(Duration defaultDuration) {
         this.defaultDuration = defaultDuration;
     }
 
@@ -53,10 +49,6 @@ public class WaitUtils {
 
     public WebElement waitForElementVisible(WebElement element) {
         return waitForElementVisibleWithCustomTime(defaultDuration.toMillis(), element);
-    }
-
-    public WebElement waitForElementVisible(By locator) {
-        return waitForElementVisibleWithCustomTime(defaultDuration.toMillis(), locator);
     }
 
 }

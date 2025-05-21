@@ -1,21 +1,23 @@
 package core.pages.account;
 
-import core.elements.account.LogInPageElements;
-import core.utils.*;
+import core.elements.account.LogInElements;
+import core.utils.BasePageObject;
+import core.utils.CredentialsUtils;
+import core.utils.DriverProvider;
+import core.utils.WebElementUtils;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class LogInPage {
     BasePageObject basePageObject = new BasePageObject(DriverProvider.getDriverProvider());
-    LogInPageElements logInPageElements;
+    LogInElements logInPageElements;
     private final WebDriver driver;
     protected final WebDriverWait wait;
 
     public LogInPage(WebDriver driver, WebDriverWait wait) {
         this.driver = driver;
         this.wait = wait;
-        this.logInPageElements = new LogInPageElements();
+        this.logInPageElements = new LogInElements();
     }
 
     public void setField(String fieldName, String value) {

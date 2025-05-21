@@ -1,16 +1,12 @@
 package core.utils;
 
 import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
     public class WebElementUtils {
-
-        public WebElementUtils(DriverProvider driver, Duration defaultDuration) {
-        }
 
         public void sendKeysToElementWithWait(WebElement element, String value, long millsWait) {
         element.sendKeys(value);

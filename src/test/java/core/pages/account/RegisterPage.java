@@ -1,13 +1,16 @@
 package core.pages.account;
 
-import core.elements.account.RegisterPageElements;
-import core.utils.*;
+import core.elements.account.RegisterElements;
+import core.utils.BasePageObject;
+import core.utils.CredentialsUtils;
+import core.utils.DriverProvider;
+import core.utils.WebElementUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
-public class RegisterPage extends RegisterPageElements {
+public class RegisterPage extends RegisterElements {
     BasePageObject basePageObject = new BasePageObject(DriverProvider.getDriver());
-    RegisterPageElements registerPageElements =  new RegisterPageElements();
+    RegisterElements RegisterElements =  new RegisterElements();
     WebDriver driver=DriverProvider.getDriver();
 
     public RegisterPage(WebDriver driver) {
@@ -21,63 +24,68 @@ public class RegisterPage extends RegisterPageElements {
                 .click();
     }
 
-    public void setFirstName(String firstName){
-        basePageObject
-                .getWaitUtils()
-                .waitForElementVisible(registerPageElements.firstName)
-                .sendKeys(firstName);
-    }
+    public void setField(String fieldName, String value) {
+        switch (fieldName.toLowerCase()) {
+            case "firstname":
+                basePageObject
+                        .getWaitUtils()
+                        .waitForElementVisible(RegisterElements.firstName)
+                        .sendKeys(value);
+                break;
 
-    public void setMiddleName(String middleName){
-        basePageObject
-                .getWaitUtils()
-                .waitForElementVisible(registerPageElements.middleName)
-                .sendKeys(middleName);
-    }
+            case "middlename":
+                basePageObject
+                        .getWaitUtils()
+                        .waitForElementVisible(RegisterElements.middleName)
+                        .sendKeys(value);
+                break;
 
-    public void setLastName(String lastName) {
-        basePageObject
-                .getWebElementUtils()
-                .sendKeysToElementWithWait(registerPageElements.lastName, lastName, 2);
-    }
+            case "lastname":
+                basePageObject
+                        .getWebElementUtils()
+                        .sendKeysToElementWithWait(RegisterElements.lastName, value, 2);
+                break;
 
-    public void setEmail(String email){
-        basePageObject
-                .getWaitUtils()
-                .waitForElementVisible(registerPageElements.emailAddress)
-                .sendKeys(email);
-    }
+            case "email":
+                basePageObject
+                        .getWaitUtils()
+                        .waitForElementVisible(RegisterElements.emailAddress)
+                        .sendKeys(value);
+                break;
 
-    public void setPassword(String password){
-        basePageObject
-                .getWebElementUtils()
-                .sendKeysToElementWithWait(registerPageElements.password,password,2);
+            case "password":
+                basePageObject
+                        .getWebElementUtils()
+                        .sendKeysToElementWithWait(RegisterElements.password, value, 2);
+                break;
 
-    }
+            case "confirmpassword":
+                basePageObject
+                        .getWebElementUtils()
+                        .sendKeysToElementWithWait(RegisterElements.confirmP, value, 2);
+                break;
 
-    public void setConfirmPassword(String confirmPassword){
-        basePageObject
-                .getWebElementUtils()
-                .sendKeysToElementWithWait(registerPageElements.confirmP,confirmPassword,2);
+            default:
+                throw new IllegalArgumentException("Unknown field name: " + fieldName);
+        }
     }
 
     public void checkboxRM() {
-        if (!WebElementUtils.isElementDisplayed(registerPageElements.checkbox)) return;
-
+        if (!WebElementUtils.isElementDisplayed(RegisterElements.checkbox)) return;
         try {
-            WebElementUtils.safeClick(driver, registerPageElements.checkbox, 5);
+            WebElementUtils.safeClick(driver, RegisterElements.checkbox, 5);
         } catch (Exception e) {
             System.out.println("Failed to click checkbox: " + e.getMessage());
         }
     }
 
     public void fillForm(String first, String middle, String last, String email, String pass, String confirmPassword) {
-        setFirstName(first);
-        setMiddleName(middle);
-        setLastName(last);
-        setEmail(email);
-        setPassword(pass);
-        setConfirmPassword(confirmPassword);
+        setField("firstname", first);
+        setField("middlename", middle);
+        setField("lastname", last);
+        setField("email", email);
+        setField("password", pass);
+        setField("confirmpassword", confirmPassword);
         checkboxRM();
 
         clickRegisterButton();
@@ -89,7 +97,4 @@ public class RegisterPage extends RegisterPageElements {
         CredentialsUtils.saveCredential("fullName", fullName);
     }
 
-    public String getSuccessMessage() {
-        return verifyRegistration.getText();
-    }
 }
